@@ -61,8 +61,10 @@ Methods:
     If date is null, the date will be the sysdate of the MySQL server.
 
   Return:
-    integer
-      the ID of the newly created image.
+  
+	- integer
+  
+	the ID of the newly created image.
 
 
 
@@ -88,7 +90,7 @@ Methods:
 
   Return:
 	List<image> 
-		contain the all metadata of images. 
+	contain the all metadata of images. 
 
 
 
