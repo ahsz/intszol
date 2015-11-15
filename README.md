@@ -92,7 +92,7 @@ Methods:
 
   Return:
 
-	List<image> 
+	- List<image> 
 
 	contain the all metadata of images. 
 
