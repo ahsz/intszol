@@ -106,13 +106,15 @@ Methods:
   Delete images' metadate from the database.
 
   Parameters:
-  - user_id
-  - image name (nullable)
-  The parameters of the image.
-  If image is null, all image of the user will be deleted.
+	- user_id
+	- image name (nullable)
+	
+	The parameters of the image.
+
+	If image is null, all image of the user will be deleted.
 
   Return:
-    void
+	- void
 
   !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
  
@@ -124,14 +126,16 @@ Methods:
   Add comment's metadata to the database.
 
   Parameters:
-  - image_id
-  - user_id
-  - content
-  the parameters of the comment
-  date will be the sysdate of the MySQL server
+	- image_id
+	- user_id
+	- content
+  
+	The parameters of the comment.
+
+	Date will be the sysdate of the MySQL server.
 
   Return:
-    void
+	- void
 
 
 
