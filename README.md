@@ -201,3 +201,58 @@ Methods:
 	- void
 
   !!! IF IMAGE_ID AND USER_ID BOTH NULL, ALL COMMENT WILL BE DELETED !!!
+
+
+
+
+- add_annotation
+
+  Add annotation's metadata to the database.
+
+  Parameters:
+	- image_id
+	- content
+  
+	The parameters of the annotation.
+
+  Return:
+	- void
+
+
+
+
+- get_annotation
+
+  Get annotations' metadatas from the database.
+
+  Parameters:
+	- image_id (nullable)
+
+	The parameters of the annotation.
+
+  Return:
+	- List<annotation>
+	
+	Contain the all metadata of annotations.
+
+
+
+
+- delete_annotation
+ 
+  !!! IF IMAGE_ID AND CONTENT BOTH NULL, ALL COMMENT WILL BE DELETED !!!
+  
+  Delete comments' metadatas from the database.
+
+  Parameters:
+	- image_id
+	- content
+  
+	Parameters of the annotation.
+
+  	If content is null, all annotation of the image will be deleted.
+
+  Return:
+	- void
+
+  !!! IF IMAGE_ID AND CONTENT BOTH NULL, ALL COMMENT WILL BE DELETED !!!
