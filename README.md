@@ -9,6 +9,15 @@ Have to be added the following external archive build paths to the package:
 - org.eclipse.jdt.annotation_[version].jar
 
 -----------------------
+--------USER--------
+-----------------------
+Structure class for users.
+
+Members:
+- protected int id
+- protected int name
+
+-----------------------
 ---------IMAGE---------
 -----------------------
 Structure class for images.
@@ -46,6 +55,19 @@ Methods:
   Set up DB connection.
 
 
+
+- get_user
+
+  Get user's metadata from the database.
+  
+  Parameters:
+	- user_id
+
+  Return:
+  
+	- user (object)
+	
+	
 
 
 - add_image
