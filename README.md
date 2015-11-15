@@ -57,14 +57,16 @@ Methods:
 	- image name
 	- date (nullable)
 	- place (nullable)
-    The parameters of the image.
-    If date is null, the date will be the sysdate of the MySQL server.
+	
+	The parameters of the image.
+
+	If date is null, the date will be the sysdate of the MySQL server.
 
   Return:
   
 	- integer
   
-	the ID of the newly created image.
+	The ID of the newly created image.
 
 
 
@@ -89,7 +91,9 @@ Methods:
 	If date_to is not null but date_from is null --> date_from = date_to	
 
   Return:
+
 	List<image> 
+
 	contain the all metadata of images. 
 
 
