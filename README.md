@@ -4,79 +4,160 @@ intszol repo
 
 package intszol;
 
------------------------
----------IMAGE---------
------------------------
-
-Structure class for image representation.
-
---Members--
-- id
-- user_id
-- name
-- date
-- place
-
---Methods--
-- toString
-
------------------------
---------UTILITY--------
------------------------
-Use of the class
-
-Have to be added the following external archive build paths:
+Have to be added the following external archive build paths to the package:
 - mysql-connector-java-[version]-bin.jar
 - org.eclipse.jdt.annotation_[version].jar
 
---Constructor--
+-----------------------
+---------IMAGE---------
+-----------------------
+Structure class for images.
 
-Set up DB connection.
+Members:
+- protected int id
+- protected int user_id
+- protected String name
+- protected String date
+- protected String place
 
+-----------------------
+--------COMMENT--------
+-----------------------
+Structure class for comments.
 
---Search image--
+Members:
+- protected int image_id
+- protected int iuser_id
+- protected String content
+- protected String date
+	
+-----------------------
+--------UTILITY--------
+-----------------------
+Class for all database transaction.
 
-Expect the parameters of the search:
-- user_id
-- image name
-- date_from
-- date_to
-- place
+Members:
+- private Connection conn
 
-All parameter can be null!
+Methods:
 
-If date_from is not null but date_to is null
---> date_to = date_from
-date_to is not null but date_from is null
---> date_from = date_to	
-
-Return with a List<image> list, contain the all metadata of images. 
-
-
---New image--
-
-Expect the parameters of the image:
-- user_id
-- image name
-- date (nullable)
-- place (nullable)
-
-If date is null, the date will be the sysdate of the MySQL server.
-
-Return with the ID of the newly added image.
-
-
---Delete image--
-
-!!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
-
-Expect the parameters of the image:
-- user_id
-- image name (nullable)
-
-If image is null, all image of the user will be deleted.
-
-!!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
+-Constructor
+  Set up DB connection.
 
 
 
+
+-add_image
+
+  Add image's metadata to the database.
+
+  Parameters:
+    - user_id
+    - image name
+    - date (nullable)
+    - place (nullable)
+    The parameters of the image.
+    If date is null, the date will be the sysdate of the MySQL server.
+
+  Return:
+    integer
+      the ID of the newly created image.
+
+
+
+
+-get_images
+
+  Get images' metadatas from the database.
+
+  Parameters:
+    - user_id (nullable)
+    - image name (nullable)
+    - date_from (nullable)
+    - date_to (nullable)
+    - place (nullable)
+  The parameters of the search.
+  All parameter can be null!
+  If date_from is not null but date_to is null
+  --> date_to = date_from
+  date_to is not null but date_from is null
+  --> date_from = date_to	
+
+  Return:
+    List<image> 
+      contain the all metadata of images. 
+
+
+
+
+-delete_image
+
+  !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
+  
+  Delete images' metadate from the database.
+
+  Parameters:
+  - user_id
+  - image name (nullable)
+  The parameters of the image.
+  If image is null, all image of the user will be deleted.
+
+  Return:
+    void
+
+  !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
+ 
+ 
+  
+  
+-add_comment
+
+  Add comment's metadata to the database.
+
+  Parameters:
+  - image_id
+  - user_id
+  - content
+  the parameters of the comment
+  date will be the sysdate of the MySQL server
+
+  Return:
+    void
+
+
+
+
+-get_comment
+
+  Get comments' metadatas from the database.
+
+  Parameters:
+  - image_id (nullable)
+  - user_id (nullable)
+  the parameters of the comment
+
+  Return:
+    List<comment>
+      contain the all metadata of comments
+
+
+
+
+-delete_comment
+ 
+  !!! IF IMAGE_ID AND USER_ID BOTH NULL, ALL COMMENT WILL BE DELETED !!!
+  
+  Delete comments' metadatas from the database.
+
+  Parameters:
+  - image_id
+  - user_id
+  Parameters of the comment.
+  If image_id is null, all comment of the user will be deleted.
+  If user_id is null, all comment of the image will be deleted.
+
+
+  Return:
+    void
+
+  !!! IF IMAGE_ID AND USER_ID BOTH NULL, ALL COMMENT WILL BE DELETED !!!
