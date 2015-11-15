@@ -67,31 +67,31 @@ Methods:
 
 
 
--get_images
+- get_images
 
   Get images' metadatas from the database.
 
   Parameters:
-    - user_id (nullable)
-    - image name (nullable)
-    - date_from (nullable)
-    - date_to (nullable)
-    - place (nullable)
-  The parameters of the search.
-  All parameter can be null!
-  If date_from is not null but date_to is null
-  --> date_to = date_from
-  date_to is not null but date_from is null
-  --> date_from = date_to	
+	- user_id (nullable)
+	- image name (nullable)
+	- date_from (nullable)
+	- date_to (nullable)
+	- place (nullable)
+	The parameters of the search.
+	All parameter can be null!
+	If date_from is not null but date_to is null
+	--> date_to = date_from
+	date_to is not null but date_from is null
+	--> date_from = date_to	
 
   Return:
-    List<image> 
-      contain the all metadata of images. 
+	List<image> 
+		contain the all metadata of images. 
 
 
 
 
--delete_image
+- delete_image
 
   !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
   
