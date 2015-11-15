@@ -52,6 +52,42 @@ public class utility {
 		
 	}
 
+	 /* Get user
+	*|* 
+	*|* Expect the parameters of the search:
+	*|*		- user_id
+	*|*
+	*|* Return with a user object, contain the all metadata of user. 
+	*/ 
+	public user get_user(int id){
+	
+		user usr = new user();
+		
+		try {	
+			// Search for the comment(s)
+			String query = "SELECT * FROM user WHERE id = ?";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			stmt.setInt(1, id); 	
+	
+			
+			// Fill up the object with the user's metadatas
+			ResultSet r = stmt.executeQuery();
+				
+			r.next();
+			usr.id = r.getInt("id");
+			usr.name = r.getString("name");
+			
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		return usr;
+	}
+	
+	
 	 /* Add new image
 	*|* 
 	*|* Expect the parameters of the image:
@@ -167,11 +203,8 @@ public class utility {
 			if (date_to != null) 	{ stmt.setString(i, date_to); i++; }
 			if (place != null)		{ stmt.setString(i, place); i++; }
 			
-			// Fill up the list with the image(s)'s ID(s)
+			// Fill up the list with the image(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
-			
-
-			
 			image img = null;
 			while (r.next()){
 				img = new image();
@@ -179,8 +212,7 @@ public class utility {
 				img.user_id = r.getInt("user_id");
 				img.name = r.getString("name");
 				img.date = r.getString("date");
-				img.place = r.getString("place");
-				
+				img.place = r.getString("place");		
 				img_list.add(img);
 			}
 			
@@ -314,7 +346,7 @@ public class utility {
 			if (image_id == null && user_id != null)
 				stmt.setInt(1, user_id);
 			
-			// Fill up the list with the image(s)'s ID(s)
+			// Fill up the list with the comment(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
 				
 			comment cmt = null;
