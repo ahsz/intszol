@@ -1,13 +1,11 @@
 package intszol;
 
-/* 						Use of the class					*\
-|* 															*|
-|* Have to be added the following external archive build	*|
-|* paths:													*|
-|*		- mysql-connector-java-[version]-bin.jar			*|
-|*		- org.eclipse.jdt.annotation_[version].jar			*|
-|*															*|
-\*                                        					*/
+ /* Use of the class
+*|*
+*|* Have to be added the following external archive build paths:
+*|*	- mysql-connector-java-[version]-bin.jar
+*|*	- org.eclipse.jdt.annotation_[version].jar														*|
+*/
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,10 +23,10 @@ public class utility {
 	private Connection conn = null;
 	
 	
-	/* 						Constructor							*\
-	|* 															*|
-	|* Set up DB connection.									*|
-	\*                                        					*/
+	 /* Constructor
+	*|* 
+	*|* Set up DB connection.
+	*/
 	public utility(){
 		try {
             String userName = "dbuser";
@@ -55,28 +53,27 @@ public class utility {
 	}
 
 	
-	/* 						Search image						*\
-	|* 															*|
-	|* Expect the parameters of the search:						*|
-	|*		- user_id											*|
-	|*		- image name										*|
-	|*		- date_from											*|
-	|*		- date_to											*|
-	|*		- place												*|
-	|*															*|
-	|* All parameter can be null!								*|
-	|*															*|
-	|* If date_from is not null but date_to is null				*|
-	|*		--> date_to = date_from								*|
-	|* If date_to is not null but date_from is null				*|
-	|* 		--> date_from = date_to								*|
-	|*															*|
-	|* Return with a List<Integer> list, contain the ID's of 	*|
-	|* the pictures.                                       		*|	
-	\*                                        					*/
-	public List<Integer> search_image(java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
+	 /*Search image
+	*|* 
+	*|* Expect the parameters of the search:
+	*|*		- user_id
+	*|*		- image name
+	*|*		- date_from
+	*|*		- date_to
+	*|*		- place
+	*|*
+	*|* All parameter can be null!
+	*|*
+	*|* If date_from is not null but date_to is null
+	*|*		--> date_to = date_from
+	*|* If date_to is not null but date_from is null
+	*|* 		--> date_from = date_to	
+	*|*
+	*|* Return with a List<image> list, contain the all metadata of images. 
+	*/ 
+	public List<image> search_image(java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
 
-		List<Integer> ia = new ArrayList<Integer>();
+		List<image> img_list = new ArrayList<image>();
 		
 		if (date_from == null && date_to != null) 
 			date_from = date_to;
@@ -114,8 +111,19 @@ public class utility {
 			
 			// Fill up the list with the image(s)'s ID(s)
 			ResultSet r = stmt.executeQuery();
+			
+
+			
+			image img = null;
 			while (r.next()){
-				ia.add(r.getInt("id"));
+				img = new image();
+				img.id = r.getInt("id");
+				img.user_id = r.getInt("user_id");
+				img.name = r.getString("name");
+				img.date = r.getString("date");
+				img.place = r.getString("place");
+				
+				img_list.add(img);
 			}
 			
 		    // Uncomment for testing
@@ -143,26 +151,22 @@ public class utility {
 		   System.out.println("SQLState: " + ex.getSQLState());
 		   System.out.println("VendorError: " + ex.getErrorCode());
 		}
-		return ia;
+		return img_list;
 	}
 
 	
-	/* 						New image							*\
-	|* 															*|
-	|* Expect the parameters of the image:						*|
-	|*		- user_id											*|
-	|*		- image name										*|
-	|*		- date (nullable)									*|
-	|*		- place (nullable)									*|
-	|*															*|
-	|*															*|
-	|* All parameter can be null!								*|
-	|*															*|
-	|* If date is null, the date will be the sysdate of the		*|
-	|* MySQL server.											*|
-	|*															*|
-	|* Return with the ID of the image.                 		*|	
-	\*                                        					*/
+	 /* New image
+	*|* 
+	*|* Expect the parameters of the image:
+	*|*		- user_id
+	*|*		- image name
+	*|*		- date (nullable)
+	*|*		- place (nullable)
+	*|*
+	*|* If date is null, the date will be the sysdate of the MySQL server.
+	*|*
+	*|* Return with the ID of the newly added image.
+	*/
 	public int new_image(int user_id, String name, @Nullable String date, @Nullable String place){
 		
 		int image_id = 0;
@@ -209,12 +213,43 @@ public class utility {
 		return image_id;
 	}
 
-	public void delete_image(int user_id, @Nullable String name){
-		
-		
-	}
+	 /* Delete image
+	*|* 
+	*|* !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
+	*|*
+	*|* Expect the parameters of the image:
+	*|*		- user_id
+	*|*		- image name (nullable)
+	*|*
+	*|* If image is null, all image of the user will be deleted.
+	*|* 
+	*|* !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE IS DELETED !!!
+	*/
+	public void delete_image(java.lang.Integer user_id, @Nullable String name){
+		try {	
+			// Delete the image
+			String query = "DELETE FROM image ";
+			if (user_id != null){
+				query += "WHERE user_id = ?";
+				if (name != null)
+					query += " AND name = ?";
+			}
 
-
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			int i=1;
+			if (user_id != null) 	{stmt.setInt(i, user_id); 	i++; }
+			if (name != null) 		{ stmt.setString(i, name); 	i++; }
+		
+			stmt.execute();
+			
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+	}		
+		
 }
 
 
