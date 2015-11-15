@@ -140,37 +140,42 @@ Methods:
 
 
 
--get_comment
+- get_comment
 
   Get comments' metadatas from the database.
 
   Parameters:
-  - image_id (nullable)
-  - user_id (nullable)
-  the parameters of the comment
+	- image_id (nullable)
+	- user_id (nullable)
+
+	The parameters of the comment.
 
   Return:
-    List<comment>
-      contain the all metadata of comments
+	- List<comment>
+	
+	Contain the all metadata of comments.
 
 
 
 
--delete_comment
+- delete_comment
  
   !!! IF IMAGE_ID AND USER_ID BOTH NULL, ALL COMMENT WILL BE DELETED !!!
   
   Delete comments' metadatas from the database.
 
   Parameters:
-  - image_id
-  - user_id
-  Parameters of the comment.
-  If image_id is null, all comment of the user will be deleted.
-  If user_id is null, all comment of the image will be deleted.
+	- image_id
+	- user_id
+  
+	Parameters of the comment.
+
+  	If image_id is null, all comment of the user will be deleted.
+
+  	If user_id is null, all comment of the image will be deleted.
 
 
   Return:
-    void
+	- void
 
   !!! IF IMAGE_ID AND USER_ID BOTH NULL, ALL COMMENT WILL BE DELETED !!!
