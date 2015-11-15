@@ -121,7 +121,7 @@ Methods:
  
   
   
--add_comment
+- add_comment
 
   Add comment's metadata to the database.
 
