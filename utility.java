@@ -87,7 +87,6 @@ public class utility {
 		return usr;
 	}
 	
-	
 	 /* Add new image
 	*|* 
 	*|* Expect the parameters of the image:
@@ -309,8 +308,6 @@ public class utility {
 			   System.out.println("SQLState: " + ex.getSQLState());
 			   System.out.println("VendorError: " + ex.getErrorCode());
 		}
-		
-		
 	}
 	
 	 /* Get comment
@@ -411,7 +408,121 @@ public class utility {
 		   System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}		
+
+	 /* Add new annotation
+	 |* 
+	 |* Expect the parameters of the comment:
+	 |*		- image_id
+	 |* 	- content
+	*/
+	public void add_annotation(int image_id, String content){
+		try {
+			
+			// Add the new comment
+			String query = "INSERT INTO annotation VALUES (null,?,?)";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			stmt.setInt(1, image_id);
+			stmt.setString(2, content);
+			
+			stmt.execute();
+			
+		} catch (SQLException ex) {
+			   System.out.println("SQLException: " + ex.getMessage());
+			   System.out.println("SQLState: " + ex.getSQLState());
+			   System.out.println("VendorError: " + ex.getErrorCode());
+		}	
+	}
 	
+	 /* Get annotation
+	 |* 
+	 |* Expect the parameters of the comment:
+	 |* 	- image_id (nullable)
+	 |* 	
+	 |* Return with a List<annotation> list, contain the all metadata of annotation(s).
+	*/
+	public List<annotation> get_annotation(java.lang.Integer image_id){
+
+		List<annotation> ano_list = new ArrayList<annotation>();
+		
+		try {	
+			// Search for the comment(s)
+			String query = "SELECT * FROM annotation";
+			if (image_id != null)
+				query += " WHERE image_id = ?";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			if (image_id != null)
+				stmt.setInt(1, image_id); 	
+
+			
+			// Fill up the list with the annotation(s)'s metadata(s)
+			ResultSet r = stmt.executeQuery();
+				
+			annotation ano = null;
+			while (r.next()){
+				ano = new annotation();
+				ano.image_id = r.getInt("image_id");
+				ano.content = r.getString("content");
+
+
+				ano_list.add(ano);
+			}
+		
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		return ano_list;
+	}
+	
+	
+	
+	 /* Delete annotation
+	 |* 
+	 |* !!! IF IMAGE_ID AND CONTENT BOTH NULL, ALL COMMENT WILL BE DELETED !!!
+	 |*
+	 |* Expect the parameters of the comment:
+	 |* 	- image_id
+	 |* 	- content
+	 |*
+	 |* If content is null, all annotation of the image will be deleted.
+	 |*
+	 |* !!! IF IMAGE_ID AND CONTENT BOTH NULL, ALL COMMENT WILL BE DELETED !!!
+	*/
+	public void delete_annotation(java.lang.Integer image_id, @Nullable String content){
+		try {
+			// Delete the annotation(s)
+			String query = "DELETE FROM annotation ";
+			if (image_id != null && content != null)
+				query += "WHERE image_id = ? AND content = ?";
+			if (image_id != null && content == null)
+				query += "WHERE image_id = ?";
+			if (image_id == null && content != null)
+				query += "WHERE content = ?";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			if (image_id != null && content != null){
+				stmt.setInt(1, image_id); 	
+				stmt.setString(2, content); 
+			}
+			if (image_id != null && content == null)
+				stmt.setInt(1, image_id); 
+			if (image_id == null && content != null)
+				stmt.setString(1, content);	
+
+			stmt.execute();
+			
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+	}	
 }
 
 
