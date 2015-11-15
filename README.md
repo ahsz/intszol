@@ -42,7 +42,8 @@ Members:
 Methods:
 
 - Constructor
-Set up DB connection.
+
+  Set up DB connection.
 
 
 
@@ -52,10 +53,10 @@ Set up DB connection.
   Add image's metadata to the database.
 
   Parameters:
-- user_id
-- image name
-- date (nullable)
-- place (nullable)
+-- user_id
+-- image name
+-- date (nullable)
+-- place (nullable)
     The parameters of the image.
     If date is null, the date will be the sysdate of the MySQL server.
 
