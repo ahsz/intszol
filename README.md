@@ -41,13 +41,13 @@ Members:
 
 Methods:
 
--Constructor
-  Set up DB connection.
+- Constructor
+Set up DB connection.
 
 
 
 
--add_image
+- add_image
 
   Add image's metadata to the database.
 
