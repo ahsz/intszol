@@ -77,12 +77,14 @@ Methods:
 	- date_from (nullable)
 	- date_to (nullable)
 	- place (nullable)
+
 	The parameters of the search.
+	
 	All parameter can be null!
-	If date_from is not null but date_to is null
-	--> date_to = date_from
-	date_to is not null but date_from is null
-	--> date_from = date_to	
+	
+	If date_from is not null but date_to is null --> date_to = date_from
+	
+	If date_to is not null but date_from is null --> date_from = date_to	
 
   Return:
 	List<image> 
