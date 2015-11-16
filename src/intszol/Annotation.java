@@ -1,6 +1,6 @@
 package intszol;
 
-class annotation {
+class Annotation {
 	public int image_id;
 	public String content;
 	

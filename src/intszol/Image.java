@@ -1,6 +1,6 @@
 package intszol;
 
-class image {
+class Image {
 	protected int id;
 	protected int user_id;
 	protected String name;

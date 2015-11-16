@@ -1,6 +1,6 @@
 package intszol;
 
-class user {
+class User {
 	protected int id;
 	protected String name;
 

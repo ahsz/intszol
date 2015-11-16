@@ -3,11 +3,11 @@ package intszol;
 import java.util.ArrayList;
 import java.util.List;
 
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
 
-		utility ut = new utility();
+		Utility ut = new Utility();
 		int i;
 		
 		ut.delete_annotation(null, null);
@@ -16,7 +16,7 @@ public class main {
 		
 		System.out.print("Get user metadatas with user_id=1" + '\n');
 		System.out.print("---------------------------------" + '\n');
-		user usr = new user();
+		User usr = new User();
 		usr = ut.get_user(1);
 		System.out.print(usr + "\n" + "\n" + "\n");
 		
@@ -48,7 +48,7 @@ public class main {
 		// Search user_id=2 user's images
 		System.out.print("Get images with user_id=2" + '\n');
 		System.out.print("-------------------------" + '\n');
-		List<image> img_list = new ArrayList<image>();
+		List<Image> img_list = new ArrayList<Image>();
 		System.out.print("ID" + "\t" + "USER_ID" + "\t" + "NAME" + "\t" + "DATE" + "\t\t" + "PLACE" + "\n");
 		img_list = ut.get_image(2, null, null, null, null);
 		for (i=0; i<img_list.size(); i++){
@@ -78,7 +78,7 @@ public class main {
 		// Search comment
 		System.out.print("Get comments with user_id=1" + '\n');
 		System.out.print("---------------------------" + '\n');
-		List<comment> cmt_list = new ArrayList<comment>();
+		List<Comment> cmt_list = new ArrayList<Comment>();
 		System.out.print("IMAGE_ID" + "\t" + "USER_ID" + "\t" + "DATE" + "\t" + "\t" + "COMMENT" + "\n");
 		cmt_list = ut.get_comment(null, 1);
 		for (i=0; i<cmt_list.size(); i++){
@@ -109,7 +109,7 @@ public class main {
 		// Search comment
 		System.out.print("Get annotations from kep_3" + '\n');
 		System.out.print("--------------------------" + '\n');
-		List<annotation> ano_list = new ArrayList<annotation>();
+		List<Annotation> ano_list = new ArrayList<Annotation>();
 		System.out.print("IMAGE_ID" + "\t" + "CONTENT" + "\n");
 		ano_list = ut.get_annotation(ut.get_image(1, "kep_3", null, null, null).get(0).id);
 		for (i=0; i<ano_list.size(); i++){

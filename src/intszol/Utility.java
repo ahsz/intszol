@@ -18,7 +18,7 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-public class utility {
+public class Utility {
 	
 	private Connection conn = null;
 	
@@ -27,7 +27,7 @@ public class utility {
 	*|* 
 	*|* Set up DB connection.
 	*/
-	public utility(){
+	public Utility(){
 		try {
             String userName = "dbuser";
             String password = "giantmouse159";
@@ -59,9 +59,9 @@ public class utility {
 	*|*
 	*|* Return with a user object, contain the all metadata of user. 
 	*/ 
-	public user get_user(int id){
+	public User get_user(int id){
 	
-		user usr = new user();
+		User usr = new User();
 		
 		try {	
 			// Search for the comment(s)
@@ -164,9 +164,9 @@ public class utility {
 	*|*
 	*|* Return with a List<image> list, contain the all metadata of images. 
 	*/ 
-	public List<image> get_image(java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
+	public List<Image> get_image(java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
 
-		List<image> img_list = new ArrayList<image>();
+		List<Image> img_list = new ArrayList<Image>();
 		
 		if (date_from == null && date_to != null) 
 			date_from = date_to;
@@ -204,9 +204,9 @@ public class utility {
 			
 			// Fill up the list with the image(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
-			image img = null;
+			Image img = null;
 			while (r.next()){
-				img = new image();
+				img = new Image();
 				img.id = r.getInt("id");
 				img.user_id = r.getInt("user_id");
 				img.name = r.getString("name");
@@ -318,9 +318,9 @@ public class utility {
 	 |*
 	 |* Return with a List<comment> list, contain the all metadata of comments.
 	*/
-	public List<comment> get_comment(java.lang.Integer image_id, java.lang.Integer user_id){
+	public List<Comment> get_comment(java.lang.Integer image_id, java.lang.Integer user_id){
 
-		List<comment> cmt_list = new ArrayList<comment>();
+		List<Comment> cmt_list = new ArrayList<Comment>();
 		
 		try {	
 			// Search for the comment(s)
@@ -346,9 +346,9 @@ public class utility {
 			// Fill up the list with the comment(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
 				
-			comment cmt = null;
+			Comment cmt = null;
 			while (r.next()){
-				cmt = new comment();
+				cmt = new Comment();
 				cmt.image_id = r.getInt("image_id");
 				cmt.user_id = r.getInt("user_id");
 				cmt.date = r.getString("date");
@@ -442,9 +442,9 @@ public class utility {
 	 |* 	
 	 |* Return with a List<annotation> list, contain the all metadata of annotation(s).
 	*/
-	public List<annotation> get_annotation(java.lang.Integer image_id){
+	public List<Annotation> get_annotation(java.lang.Integer image_id){
 
-		List<annotation> ano_list = new ArrayList<annotation>();
+		List<Annotation> ano_list = new ArrayList<Annotation>();
 		
 		try {	
 			// Search for the comment(s)
@@ -461,9 +461,9 @@ public class utility {
 			// Fill up the list with the annotation(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
 				
-			annotation ano = null;
+			Annotation ano = null;
 			while (r.next()){
-				ano = new annotation();
+				ano = new Annotation();
 				ano.image_id = r.getInt("image_id");
 				ano.content = r.getString("content");
 

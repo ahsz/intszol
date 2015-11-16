@@ -1,6 +1,6 @@
 package intszol;
 
-public class comment {
+public class Comment {
 	protected int image_id;
 	protected int user_id;
 	protected String content;
