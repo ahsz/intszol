@@ -2,6 +2,8 @@ package intszol;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -12,6 +14,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BrowsePanel extends JPanel {
 
@@ -22,6 +26,10 @@ public class BrowsePanel extends JPanel {
 	private JButton btnModifyImage;
 	private JButton btnDeleteImage;
 	private JButton btnShareImage;
+	private JTextField txtImage;
+	
+	private int currentImgId;
+	private int currentImgIndex;
 	
 	/**
 	 * Create the panel.
@@ -29,6 +37,7 @@ public class BrowsePanel extends JPanel {
 	public BrowsePanel() {
 				
 		btnRight = new JButton("");
+		
 		 try {
 			    BufferedImage img = ImageIO.read(getClass().getResource("/images/right_arrow.png"));
 			    btnRight.setIcon(new ImageIcon(img));
@@ -36,6 +45,7 @@ public class BrowsePanel extends JPanel {
 			  }
 		
 		btnLeft = new JButton("");		
+		
 		JPanel imagePanel = new JPanel();
 		try {
 		    BufferedImage img = ImageIO.read(getClass().getResource("/images/left_arrow.png"));
@@ -92,6 +102,11 @@ public class BrowsePanel extends JPanel {
 		    			.addContainerGap(192, Short.MAX_VALUE))
 		    );
 		    
+		    txtImage = new JTextField();
+		    txtImage.setEditable(false);
+		    imagePanel.add(txtImage);
+		    txtImage.setColumns(10);
+		    
 		    txtTitleComment = new JTextField();
 		    txtTitleComment.setEditable(false);
 		    txtTitleComment.setText("Megjegyz\u00E9s:");
@@ -120,5 +135,49 @@ public class BrowsePanel extends JPanel {
 		  } catch (IOException ex) {
 		  }
 		
+		List<Image> img_list = new ArrayList<Image>();
+		System.out.print("ID" + "\t" + "USER_ID" + "\t" + "NAME" + "\t" + "DATE" + "\t\t" + "PLACE" + "\n");
+		img_list = MainWindow.ut.get_image(2, null, null, null, null);
+		for (int i=0; i<img_list.size(); i++){
+			System.out.print(img_list.get(i) + "\n");
+		}
+		
+		currentImgId = img_list.get(0).id;
+		currentImgIndex = 0;
+		txtImage.setText(img_list.get(currentImgIndex).name);
+		if(MainWindow.ut.get_comment(currentImgId, null) != null)
+			txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
+		else
+			txtComment.setText("");
+		
+		final ArrayList<Image> tmpImgList = (ArrayList<Image>) img_list;
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(tmpImgList.size() != (currentImgIndex + 1) && tmpImgList.get(currentImgIndex + 1) != null){
+					currentImgId = tmpImgList.get(currentImgIndex + 1).id;
+					currentImgIndex++;
+					txtImage.setText(tmpImgList.get(currentImgIndex).name);
+					if(MainWindow.ut.get_comment(currentImgId, null).size() !=0)
+						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
+					else
+						txtComment.setText("");
+				}
+			}
+		});
+		
+		btnLeft.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(tmpImgList.size() != (currentImgIndex - 1) && currentImgIndex > 0 && tmpImgList.get(currentImgIndex - 1) != null){
+					currentImgId = tmpImgList.get(currentImgIndex - 1).id;
+					currentImgIndex--;
+					txtImage.setText(tmpImgList.get(currentImgIndex).name);
+					if(MainWindow.ut.get_comment(currentImgId, null).size() !=0)
+						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
+					else
+						txtComment.setText("");
+				}
+			}
+		});
 	}
 }
