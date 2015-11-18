@@ -2,6 +2,8 @@ package intszol;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,10 +14,11 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JRadioButton;
 
 public class SearchPanel extends JPanel {
 
@@ -35,6 +38,7 @@ public class SearchPanel extends JPanel {
 	private JRadioButton radioBtnSearchForComments;
 	private JRadioButton radioButtonSearchForDate;
 	
+	private ArrayList<Image> imgList;
 	private ArrayList<Image> filteredImages;
 	
 	/**
@@ -71,40 +75,85 @@ public class SearchPanel extends JPanel {
 		    txtSearchTitle.setColumns(10);
 		    
 		    txtSearchArea = new JTextField();
-		    txtSearchArea.addActionListener(new ActionListener() {
-		    	public void actionPerformed(ActionEvent arg0) {
-		    		txtSearchArea.setText("");
-		    	}
-		    });
+		    txtSearchArea.addMouseListener(new MouseAdapter() {
+		    	  @Override
+		    	  public void mouseClicked(MouseEvent e) {
+		    	    txtSearchArea.setText("");
+		    	  }
+		    	});
 		    txtSearchArea.setColumns(10);
 		    
 		    radioBtnSearchForComments = new JRadioButton("Megjegyz\u00E9sre");
+		    radioBtnSearchForComments.addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent e) {
+		    		radioButtonSearchForDate.setSelected(false);
+		    		txtSearchArea.setText("√çrja be a keresend≈ë megjegyz√©st!");
+		    	}
+		    });
 		    radioButtonSearchForDate= new JRadioButton("D\u00E1tumra");
+		    radioButtonSearchForDate.addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent e) {
+		    		radioBtnSearchForComments.setSelected(false);
+		    		txtSearchArea.setText("2015-01-01");
+		    	}
+		    });
 		    radioButtonSearchForDate.setSelected(true);
+		    txtSearchArea.setText("2015-01-01");
 		    
 		    filteredImages = new ArrayList<>();
-		    List<Image> imgList = new ArrayList<Image>();
-			imgList = MainWindow.ut.get_image(null, 2, null, null, null, null);
+		    imgList = new ArrayList<Image>();
+			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null, null);
 		    
 		    JButton btnSearch = new JButton("Keres\u00E9s");
 		    btnSearch.addActionListener(new ActionListener() {
 		    	public void actionPerformed(ActionEvent e) {
+		    		imgList.clear();
+		    		btnRight.setVisible(false);
+		    		btnLeft.setVisible(false);
+		    		txtTitleComment.setVisible(false);
+		    		txtComment.setVisible(false);
+		    		btnModifyImage.setVisible(false);
+		    		btnDeleteImage.setVisible(false);
+		    		btnShareImage.setVisible(false);
+		    		txtImage.setVisible(false);
+		    		
 		    		if(radioBtnSearchForComments.isSelected()){
 		    			List<Comment> commentList = new ArrayList<Comment>();
-		    			commentList = MainWindow.ut.get_comment(null, 2); //TODO itt be van Ègetve a userID, ha tˆbb usert akarunk akkor dinamikuss· kell ezt tenni
+		    			commentList = MainWindow.ut.get_comment(null, 2); //TODO itt be van √©getve a userID, ha t√∂bb usert akarunk akkor dinamikuss√° kell ezt tenni
 		    			for (int i=0; i<commentList.size(); i++){
 							if(commentList.get(i).content.toLowerCase().contains((String)(txtSearchArea.getText()).toLowerCase())){
 		    					filteredImages.addAll((ArrayList<Image>) MainWindow.ut.get_image(commentList.get(i).image_id, 2, null, null, null, null));
-		    					if(filteredImages.size() > 0)
-		    						System.out.println("Tal·lat: " + filteredImages.get(0));
+		    					if(filteredImages.size() > 0){
+		    						btnRight.setVisible(true);;
+		    						btnLeft.setVisible(true);;
+		    						txtTitleComment.setVisible(true);;
+		    						txtComment.setVisible(true);;
+		    						btnModifyImage.setVisible(true);;
+		    						btnDeleteImage.setVisible(true);;
+		    						btnShareImage.setVisible(true);
+		    						txtImage.setVisible(true);
+		    						imgList = filteredImages;
+		    					}
 							}
 		    				
 		    			}
 
 		    		}
-		    		if(radioButtonSearchForDate.isSelected()){
-		    			
+		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null).size() !=0){
+		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null);
+		    			btnRight.setVisible(true);;
+						btnLeft.setVisible(true);;
+						txtTitleComment.setVisible(true);;
+						txtComment.setVisible(true);;
+						btnModifyImage.setVisible(true);;
+						btnDeleteImage.setVisible(true);;
+						btnShareImage.setVisible(true);
+						txtImage.setVisible(true);
 		    		}
+		    		
+		    		if(imgList.size()==0)
+		    			JOptionPane.showMessageDialog(SearchPanel.this,
+		    				    "Nincs tal√°lat!");
 		    	}
 		    });
 		    
@@ -209,45 +258,35 @@ public class SearchPanel extends JPanel {
 		  } catch (IOException ex) {
 		  }
 		
-		btnRight.setVisible(false);;
-		btnLeft.setVisible(false);;
-		txtTitleComment.setVisible(false);;
-		txtComment.setVisible(false);;
-		btnModifyImage.setVisible(false);;
-		btnDeleteImage.setVisible(false);;
+		btnRight.setVisible(false);
+		btnLeft.setVisible(false);
+		txtTitleComment.setVisible(false);
+		txtComment.setVisible(false);
+		btnModifyImage.setVisible(false);
+		btnDeleteImage.setVisible(false);
 		btnShareImage.setVisible(false);
 		txtImage.setVisible(false);
 		
 		if(radioButtonSearchForDate.isSelected())
-			txtSearchArea.setText("ilyen form·tumba Ìrd be, majd kital·ljuk");
+			txtSearchArea.setText("ilyen form√°tumba √≠rd be, majd kital√°ljuk");
 		if(radioBtnSearchForComments.isSelected())
-			txtSearchArea.setText("Õrja be a megjegyzÈst, melyre r·keresne!");
+			txtSearchArea.setText("√çrja be a megjegyz√©st, melyre r√°keresne!");
 		
-		
-		
-		List<Image> img_list = new ArrayList<Image>();
-		System.out.print("ID" + "\t" + "USER_ID" + "\t" + "NAME" + "\t" + "DATE" + "\t\t" + "PLACE" + "\n");
-		img_list = MainWindow.ut.get_image(null, 2, null, null, null, null);
-		for (int i=0; i<img_list.size(); i++){
-			System.out.print(img_list.get(i) + "\n");
-		}
-		
-		currentImgId = img_list.get(0).id;
+		currentImgId = imgList.get(0).id;
 		currentImgIndex = 0;
-		txtImage.setText(img_list.get(currentImgIndex).name);
+		txtImage.setText(imgList.get(currentImgIndex).name);
 		if(MainWindow.ut.get_comment(currentImgId, null) != null)
 			txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 		else
 			txtComment.setText("");
 		
-		final ArrayList<Image> tmpImgList = (ArrayList<Image>) img_list;
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				if(tmpImgList.size() != (currentImgIndex + 1) && tmpImgList.get(currentImgIndex + 1) != null){
-					currentImgId = tmpImgList.get(currentImgIndex + 1).id;
+				if(imgList.size() != (currentImgIndex + 1) && imgList.get(currentImgIndex + 1) != null){
+					currentImgId = imgList.get(currentImgIndex + 1).id;
 					currentImgIndex++;
-					txtImage.setText(tmpImgList.get(currentImgIndex).name);
+					txtImage.setText(imgList.get(currentImgIndex).name);
 					if(MainWindow.ut.get_comment(currentImgId, null).size() !=0)
 						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 					else
@@ -258,10 +297,10 @@ public class SearchPanel extends JPanel {
 		
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(tmpImgList.size() != (currentImgIndex - 1) && currentImgIndex > 0 && tmpImgList.get(currentImgIndex - 1) != null){
-					currentImgId = tmpImgList.get(currentImgIndex - 1).id;
+				if(imgList.size() != (currentImgIndex - 1) && currentImgIndex > 0 && imgList.get(currentImgIndex - 1) != null){
+					currentImgId = imgList.get(currentImgIndex - 1).id;
 					currentImgIndex--;
-					txtImage.setText(tmpImgList.get(currentImgIndex).name);
+					txtImage.setText(imgList.get(currentImgIndex).name);
 					if(MainWindow.ut.get_comment(currentImgId, null).size() !=0)
 						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 					else
