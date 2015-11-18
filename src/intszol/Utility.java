@@ -165,7 +165,7 @@ public class Utility {
 	*|*
 	*|* Return with a List<image> list, contain the all metadata of images. 
 	*/ 
-	public List<Image> get_image(java.lang.Integer img_id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
+	public List<Image> get_image(java.lang.Integer id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
 
 		List<Image> img_list = new ArrayList<Image>();
 		
@@ -177,21 +177,23 @@ public class Utility {
 		try {	
 			// Search for the image(s)
 			String query = "SELECT * FROM image";
-			if (img_id != null || user_id != null || name != null || date_from != null || date_to != null || place != null )	
+			if (id != null || user_id != null || name != null || date_from != null || date_to != null || place != null )	
 				query += " WHERE";
-			if (img_id != null)									
-				query += " user_id = ?";
+			if (id != null)									
+				query += " id = ?";
+			if (id != null && user_id != null)
+				query += " AND"
 			if (user_id != null)									
 				query += " user_id = ?";
-			if (user_id != null && name != null)					
+			if ((id != null || user_id != null) && name != null)					
 				query += " AND";
 			if (name != null)										
 				query += " name = ?";
-			if ((user_id != null || name != null) && date_from != null)
+			if ((id != null || user_id != null || name != null) && date_from != null)
 				query += " AND";			
 			if (date_from != null)
 				query += " date >= ? AND date <= ?";	
-			if ((user_id != null || name != null || date_from != null) && place != null)
+			if ((id != null || user_id != null || name != null || date_from != null) && place != null)
 				query += " AND";
 			if (place != null)
 				query += " place = ?";
