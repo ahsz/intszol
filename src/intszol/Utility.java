@@ -182,7 +182,7 @@ public class Utility {
 			if (id != null)									
 				query += " id = ?";
 			if (id != null && user_id != null)
-				query += " AND"
+				query += " AND";
 			if (user_id != null)									
 				query += " user_id = ?";
 			if ((id != null || user_id != null) && name != null)					
@@ -201,7 +201,7 @@ public class Utility {
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			
 			int i=1;
-			if (img_id != null)	{ stmt.setInt(i, img_id); 	i++; } 
+			if (id != null)	{ stmt.setInt(i, id); 	i++; } 
 			if (user_id != null)	{ stmt.setInt(i, user_id); 	i++; } 
 			if (name != null) 		{ stmt.setString(i, name); 	i++; }
 			if (date_from != null) 	{ stmt.setString(i, date_from); i++; }
