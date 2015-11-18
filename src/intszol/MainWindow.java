@@ -75,7 +75,7 @@ public class MainWindow {
 		System.out.print("-------------------------" + '\n');
 		List<Image> img_list = new ArrayList<Image>();
 		System.out.print("ID" + "\t" + "USER_ID" + "\t" + "NAME" + "\t" + "DATE" + "\t\t" + "PLACE" + "\n");
-		img_list = ut.get_image(2, null, null, null, null);
+		img_list = ut.get_image(null, 2, null, null, null, null);
 		for (i=0; i<img_list.size(); i++){
 			System.out.print(img_list.get(i) + "\n");
 		}
@@ -85,17 +85,17 @@ public class MainWindow {
 		// Add comment
 		System.out.print("Add new comments" + '\n');
 		System.out.print("----------------" + '\n');
-		ut.add_comment(ut.get_image(1, "kep_1", null, null, null).get(0).id  , 1, "ez egy jó kép1");
+		ut.add_comment(ut.get_image(null, null, "kep_1", null, null, null).get(0).id  , 1, "ez egy jó kép1");
 		System.out.print("user_id = 1" + "\t" + "image_name = kep_1" + "\t" + "content = ez egy jó kép1" + "\n");
-		ut.add_comment(ut.get_image(1, "kep_2", null, null, null).get(0).id  , 1, "ez egy jó kép2");
+		ut.add_comment(ut.get_image(null, 1, "kep_2", null, null, null).get(0).id  , 1, "ez egy jó kép2");
 		System.out.print("user_id = 1" + "\t" + "image_name = kep_2" + "\t" + "content = ez egy jó kép2" + "\n");
-		ut.add_comment(ut.get_image(1, "kep_2", null, null, null).get(0).id  , 1, "ez egy jó kép3");
+		ut.add_comment(ut.get_image(null, 1, "kep_2", null, null, null).get(0).id  , 1, "ez egy jó kép3");
 		System.out.print("user_id = 1" + "\t" + "image_name = kep_2" + "\t" + "content = ez egy jó kép3" + "\n");
-		ut.add_comment(ut.get_image(2, "kep_1", null, null, null).get(0).id  , 2, "ez egy jó kép4");
+		ut.add_comment(ut.get_image(null, 2, "kep_1", null, null, null).get(0).id  , 2, "ez egy jó kép4");
 		System.out.print("user_id = 2" + "\t" + "image_name = kep_1" + "\t" + "content = ez egy jó kép4" + "\n");
-		ut.add_comment(ut.get_image(2, "kep_2", null, null, null).get(0).id  , 2, "ez egy jó kép5");
+		ut.add_comment(ut.get_image(null, 2, "kep_2", null, null, null).get(0).id  , 2, "ez egy jó kép5");
 		System.out.print("user_id = 2" + "\t" + "image_name = kep_2" + "\t" + "content = ez egy jó kép5" + "\n");
-		ut.add_comment(ut.get_image(2, "kep_2", null, null, null).get(0).id  , 2, "ez egy jó kép6");
+		ut.add_comment(ut.get_image(null, 2, "kep_2", null, null, null).get(0).id  , 2, "ez egy jó kép6");
 		System.out.print("user_id = 2" + "\t" + "image_name = kep_2" + "\t" + "content = ez egy jó kép6" + "\n");		
 		
 		System.out.print("\n" + "\n");
@@ -116,17 +116,17 @@ public class MainWindow {
 		// Add annotation
 		System.out.print("Add annotations" + '\n');
 		System.out.print("---------------" + '\n');
-		ut.add_annotation(ut.get_image(2, "kep_2", null, null, null).get(0).id, "#party");
+		ut.add_annotation(ut.get_image(null, 2, "kep_2", null, null, null).get(0).id, "#party");
 		System.out.print("image_name = kep_2" + "\t" + "content = party" + "\n");
-		ut.add_annotation(ut.get_image(2, "kep_2", null, null, null).get(0).id, "#balaton");
+		ut.add_annotation(ut.get_image(null, 2, "kep_2", null, null, null).get(0).id, "#balaton");
 		System.out.print("image_name = kep_2" + "\t" + "content = balaton" + "\n");
-		ut.add_annotation(ut.get_image(2, "kep_2", null, null, null).get(0).id, "#spenót");
+		ut.add_annotation(ut.get_image(null, 2, "kep_2", null, null, null).get(0).id, "#spenót");
 		System.out.print("image_name = kep_2" + "\t" + "content = spenót" + "\n");
-		ut.add_annotation(ut.get_image(1, "kep_3", null, null, null).get(0).id, "#party2");
+		ut.add_annotation(ut.get_image(null, 1, "kep_3", null, null, null).get(0).id, "#party2");
 		System.out.print("image_name = kep_3" + "\t" + "content = party2" + "\n");
-		ut.add_annotation(ut.get_image(1, "kep_3", null, null, null).get(0).id, "#balaton2");
+		ut.add_annotation(ut.get_image(null, 1, "kep_3", null, null, null).get(0).id, "#balaton2");
 		System.out.print("image_name = kep_3" + "\t" + "content = balaton2" + "\n");
-		ut.add_annotation(ut.get_image(1, "kep_3", null, null, null).get(0).id, "#spenót2");
+		ut.add_annotation(ut.get_image(null, 1, "kep_3", null, null, null).get(0).id, "#spenót2");
 		System.out.print("image_name = kep_3" + "\t" + "content = spenót2" + "\n");
 		
 		System.out.print("\n" + "\n");
@@ -136,7 +136,7 @@ public class MainWindow {
 		System.out.print("--------------------------" + '\n');
 		List<Annotation> ano_list = new ArrayList<Annotation>();
 		System.out.print("IMAGE_ID" + "\t" + "CONTENT" + "\n");
-		ano_list = ut.get_annotation(ut.get_image(1, "kep_3", null, null, null).get(0).id);
+		ano_list = ut.get_annotation(ut.get_image(null, 1, "kep_3", null, null, null).get(0).id);
 		for (i=0; i<ano_list.size(); i++){
 			System.out.print(ano_list.get(i) + "\n");
 		}

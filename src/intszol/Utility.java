@@ -149,6 +149,7 @@ public class Utility {
 	 /* Get image
 	*|* 
 	*|* Expect the parameters of the search:
+	*		- image_id
 	*|*		- user_id
 	*|*		- image name
 	*|*		- date_from
@@ -164,7 +165,7 @@ public class Utility {
 	*|*
 	*|* Return with a List<image> list, contain the all metadata of images. 
 	*/ 
-	public List<Image> get_image(java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
+	public List<Image> get_image(java.lang.Integer img_id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
 
 		List<Image> img_list = new ArrayList<Image>();
 		
@@ -176,8 +177,10 @@ public class Utility {
 		try {	
 			// Search for the image(s)
 			String query = "SELECT * FROM image";
-			if (user_id != null || name != null || date_from != null || date_to != null || place != null )	
+			if (img_id != null || user_id != null || name != null || date_from != null || date_to != null || place != null )	
 				query += " WHERE";
+			if (img_id != null)									
+				query += " user_id = ?";
 			if (user_id != null)									
 				query += " user_id = ?";
 			if (user_id != null && name != null)					
@@ -196,6 +199,7 @@ public class Utility {
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			
 			int i=1;
+			if (img_id != null)	{ stmt.setInt(i, img_id); 	i++; } 
 			if (user_id != null)	{ stmt.setInt(i, user_id); 	i++; } 
 			if (name != null) 		{ stmt.setString(i, name); 	i++; }
 			if (date_from != null) 	{ stmt.setString(i, date_from); i++; }
