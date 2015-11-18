@@ -528,7 +528,108 @@ public class Utility {
 		   System.out.println("SQLState: " + ex.getSQLState());
 		   System.out.println("VendorError: " + ex.getErrorCode());
 		}
-	}	
+	}
+	
+		public void add_share(int image_id, int user_id){
+		try {
+			
+			// Add the new share
+			String query = "INSERT INTO shared VALUES (?,?)";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			stmt.setInt(1, image_id);
+			stmt.setInt(2, user_id);
+			
+			stmt.execute();
+			
+		} catch (SQLException ex) {
+			   System.out.println("SQLException: " + ex.getMessage());
+			   System.out.println("SQLState: " + ex.getSQLState());
+			   System.out.println("VendorError: " + ex.getErrorCode());
+		}	
+	}
+	
+	public List<Shared> get_share(java.lang.Integer image_id, java.lang.Integer user_id){
+
+		List<Shared> shr_list = new ArrayList<Shared>();
+		
+		try {	
+			// Search for the comment(s)
+			String query = "SELECT * FROM shared";
+			if (image_id != null || user_id != null)
+				query += " WHERE";
+			if (image_id != null)	
+				query += " image_id = ?";
+			if (image_id != null && user_id != null)
+				query += " AND";
+			if (user_id != null)
+				query += " user_id = ?";
+			
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			if (image_id != null && user_id != null){
+				stmt.setInt(1, image_id); 	
+				stmt.setInt(2, user_id); 
+			}
+			if (image_id != null && user_id == null)
+				stmt.setInt(1, image_id); 
+			if (image_id == null && user_id != null)
+				stmt.setInt(1, user_id);
+
+			
+			// Fill up the list with the annotation(s)'s metadata(s)
+			ResultSet r = stmt.executeQuery();
+				
+			Shared shr = null;
+			while (r.next()){
+				shr = new Shared();
+				shr.image_id = r.getInt("image_id");
+				shr.user_id = r.getInt("user_id");
+
+
+				shr_list.add(shr);
+			}
+		
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		return shr_list;
+	}
+	
+	public void delete_share(java.lang.Integer image_id, java.lang.Integer user_id){
+		try {
+			// Delete the annotation(s)
+			String query = "DELETE FROM shared ";
+			if (image_id != null && user_id != null)
+				query += "WHERE image_id = ? AND user_id = ?";
+			if (image_id != null && user_id == null)
+				query += "WHERE image_id = ?";
+			if (image_id == null && user_id != null)
+				query += "WHERE user_id = ?";
+
+			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
+			
+			if (image_id != null && user_id != null){
+				stmt.setInt(1, image_id); 	
+				stmt.setInt(2, user_id); 
+			}
+			if (image_id != null && user_id == null)
+				stmt.setInt(1, image_id); 
+			if (image_id == null && user_id != null)
+				stmt.setInt(1, user_id);	
+
+			stmt.execute();
+			
+		} catch (SQLException ex) {
+		   System.out.println("SQLException: " + ex.getMessage());
+		   System.out.println("SQLState: " + ex.getSQLState());
+		   System.out.println("VendorError: " + ex.getErrorCode());
+		}
+	}
 }
 
 
