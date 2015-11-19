@@ -101,7 +101,7 @@ public class Utility {
 	*|*
 	*|* Return with the ID of the newly added image.
 	*/
-	public int add_image(int user_id, String name, @Nullable String date, @Nullable String place, String gd_id, String gd_url){
+	public int add_image(int user_id, String name, @Nullable String date, @Nullable String place, String gd_id, String gd_url, String gd_id2, String gd_url2){
 		
 		int image_id = 0;
 		
@@ -118,7 +118,7 @@ public class Utility {
 				query += "?";
 			else
 				query += "null";
-			query += " ,?,?)";
+			query += " ,?,?,?,?)";
 			
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			int i=1;
@@ -131,6 +131,10 @@ public class Utility {
 			stmt.setString(i, gd_id);
 			i++;
 			stmt.setString(i, gd_url);
+			i++;
+			stmt.setString(i, gd_id2);
+			i++;
+			stmt.setString(i, gd_url2);
 			
 			stmt.execute();
 			
@@ -171,7 +175,7 @@ public class Utility {
 	*|*
 	*|* Return with a List<image> list, contain the all metadata of images. 
 	*/ 
-	public List<Image> get_image(java.lang.Integer id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place, @Nullable String gd_id){
+	public List<Image> get_image(java.lang.Integer id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place, @Nullable String gd_id, @Nullable String gd_id2){
 
 		List<Image> img_list = new ArrayList<Image>();
 		
@@ -206,7 +210,7 @@ public class Utility {
 			if ((id != null || user_id != null || name != null || date_from != null || place != null) && gd_id != null)
 				query += " AND";
 			if (gd_id != null)
-				query += " gd_id = ?";			
+				query += " gd_id = ? AND gd_id2 = ?";			
 				
 
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
@@ -218,7 +222,8 @@ public class Utility {
 			if (date_from != null) 	{ stmt.setString(i, date_from); i++; }
 			if (date_to != null) 	{ stmt.setString(i, date_to); i++; }
 			if (place != null)		{ stmt.setString(i, place); i++; }
-			if (gd_id != null)		{ stmt.setString(i, gd_id); i++; }
+			if (gd_id != null)		{ stmt.setString(i, gd_id); i++;
+									  stmt.setString(i, gd_id2); i++; }
 			
 			// Fill up the list with the image(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
@@ -231,6 +236,9 @@ public class Utility {
 				img.date = r.getString("date");
 				img.place = r.getString("place");	
 				img.gd_id = r.getString("gd_id");
+				img.gd_url = r.getString("gd_url");
+				img.gd_id2 = r.getString("gd_id2");
+				img.gd_url2 = r.getString("gd_url2");
 				img_list.add(img);
 			}
 			
@@ -268,15 +276,18 @@ public class Utility {
 	*|*
 	*|* Expect the parameters of the image:
 	*|*		- user_id
+	*|*		AND
 	*|*		- image name (nullable)
-	*|*		or
+	*|*		OR
 	*|*		- gd_id
+	*|*		AND
+	*|*		- gd_id2
 	*|*
 	*|* If image is null, all image of the user will be deleted.
 	*|* 
 	*|* !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE WILL BE DELETED !!!
 	*/
-	public void delete_image(java.lang.Integer user_id, @Nullable String name, String gd_id){
+	public void delete_image(java.lang.Integer user_id, @Nullable String name, String gd_id, String gd_id2){
 		try {	
 			// Delete the image
 			String query = "DELETE FROM image ";
@@ -284,8 +295,8 @@ public class Utility {
 				query += "WHERE user_id = ?";
 				if (name != null)
 					query += " AND name = ?";
-			} else if (gd_id != null)
-				query += "WHERE gd_id = ?";
+			} else if (gd_id != null && gd_id2 != null)
+				query += "WHERE gd_id = ? AND gd_id2 = ?";
 			
 
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
@@ -294,6 +305,7 @@ public class Utility {
 			if (user_id != null) 	{stmt.setInt(i, user_id); 	i++; }
 			if (name != null) 		{ stmt.setString(i, name); 	i++; }
 			if (gd_id != null)		{ stmt.setString(1, gd_id);		 }
+			if (gd_id2 != null)		{ stmt.setString(2, gd_id2);	 }
 		
 			stmt.execute();
 			
@@ -650,3 +662,5 @@ public class Utility {
 	}
 	
 }
+
+
