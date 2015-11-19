@@ -103,10 +103,15 @@ public class SearchPanel extends JPanel {
 		    filteredImages = new ArrayList<>();
 		    imgList = new ArrayList<Image>();
 			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null, null,null);
+			
+			DriveConnector driveInstance = DriveConnector.getInstance();
 		    
-		    JButton btnSearch = new JButton("Keres\u00E9s");
+			JButton btnSearch = new JButton("Keres\u00E9s");
 		    btnSearch.addActionListener(new ActionListener() {
 		    	public void actionPerformed(ActionEvent e) {
+		    		//csak tesztnek beegetve
+		    		driveInstance.getFileToFile();
+		    		
 		    		imgList.clear();
 		    		btnRight.setVisible(false);
 		    		btnLeft.setVisible(false);
@@ -150,6 +155,9 @@ public class SearchPanel extends JPanel {
 						btnShareImage.setVisible(true);
 						txtImage.setVisible(true);
 		    		}
+		    		
+		    		//TODO ezzel lehet lekerni a filet
+		    		//InputStream getFileToInputStream(String flieID, String fileUrl)
 		    		
 		    		if(imgList.size()==0)
 		    			JOptionPane.showMessageDialog(SearchPanel.this,
