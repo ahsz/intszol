@@ -22,7 +22,7 @@ import javax.swing.JProgressBar;
 public class MainWindow {
 
 	private JFrame initialWindow;
-	private InitialPanel startPanel= new InitialPanel();
+	private InitialPanel startPanel= null;
 	private BrowsePanel browsePanel = new BrowsePanel();
 	private UploadPanel uploadPanel = new UploadPanel();
 	private SearchPanel searchPanel = new SearchPanel();
@@ -148,8 +148,6 @@ public class MainWindow {
 		
 		
 		ut.delete_share(null, null);
-
-	}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -179,6 +177,13 @@ public class MainWindow {
 		initialWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initialWindow.getContentPane().setLayout(null);
 		 
+		try {
+			startPanel= new InitialPanel();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		startPanel.setBounds(0, 26, 784, 605);
 		initialWindow.getContentPane().add(startPanel);
 				
