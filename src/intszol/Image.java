@@ -1,13 +1,16 @@
 package intszol;
 
 class Image {
-	protected int id;
-	protected int user_id;
-	protected String name;
-	protected String date;
-	protected String place;
+	public int id;
+	public int user_id;
+	public String name;
+	public String date;
+	public String place;
+	public String gd_id;
+	public String gd_url;
 	
-  public String toString() {
-    return id + "\t" + user_id + "\t" + name + "\t" + date + "\t" + place;
-  }
+    public String toString() {
+    	
+        return id + "\t" + user_id + "\t" + name + "\t" + date + "\t" + place + "\t" + gd_id + "\t" + gd_url;
+    }
 }
