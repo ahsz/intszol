@@ -94,12 +94,14 @@ public class Utility {
 	*|*		- image name
 	*|*		- date (nullable)
 	*|*		- place (nullable)
+	*|*		- gd_id
+	*|*		- gd_url
 	*|*
 	*|* If date is null, the date will be the sysdate of the MySQL server.
 	*|*
 	*|* Return with the ID of the newly added image.
 	*/
-	public int add_image(int user_id, String name, @Nullable String date, @Nullable String place){
+	public int add_image(int user_id, String name, @Nullable String date, @Nullable String place, String gd_id, String gd_url){
 		
 		int image_id = 0;
 		
@@ -113,9 +115,10 @@ public class Utility {
 			else
 				query += "sysdate(),";
 			if (place != null)
-				query += "?)";
+				query += "?";
 			else
-				query += "null)";		
+				query += "null";
+			query += " ,?,?)";
 			
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			int i=1;
@@ -124,15 +127,17 @@ public class Utility {
 			stmt.setString(i, name);
 			i++;
 			if (date != null)	{ stmt.setString(i, date); 	i++; }
-			if (place != null)	{ stmt.setString(i, place); 	 }
+			if (place != null)	{ stmt.setString(i, place); i++; }
+			stmt.setString(i, gd_id);
+			i++;
+			stmt.setString(i, gd_url);
 			
 			stmt.execute();
 			
 			// Query the ID of the newly added image.
-			query = "SELECT * FROM image WHERE user_id = ? AND name = ?";			
+			query = "SELECT * FROM image WHERE gd_id = ?";			
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, user_id);
-			stmt.setString(2, name);
+			stmt.setString(1, gd_id);
 			ResultSet r = stmt.executeQuery();
 			r.next();
 			image_id = r.getInt("id");
@@ -149,7 +154,8 @@ public class Utility {
 	 /* Get image
 	*|* 
 	*|* Expect the parameters of the search:
-	*		- image_id
+	*|*		- id
+	*|*		- image_id
 	*|*		- user_id
 	*|*		- image name
 	*|*		- date_from
@@ -165,7 +171,7 @@ public class Utility {
 	*|*
 	*|* Return with a List<image> list, contain the all metadata of images. 
 	*/ 
-	public List<Image> get_image(java.lang.Integer id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place){
+	public List<Image> get_image(java.lang.Integer id, java.lang.Integer user_id, @Nullable String name, @Nullable String date_from, @Nullable String date_to, @Nullable String place, @Nullable String gd_id){
 
 		List<Image> img_list = new ArrayList<Image>();
 		
@@ -197,16 +203,22 @@ public class Utility {
 				query += " AND";
 			if (place != null)
 				query += " place = ?";
+			if ((id != null || user_id != null || name != null || date_from != null || place != null) && gd_id != null)
+				query += " AND";
+			if (gd_id != null)
+				query += " gd_id = ?";			
+				
 
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			
 			int i=1;
-			if (id != null)	{ stmt.setInt(i, id); 	i++; } 
+			if (id != null)			{ stmt.setInt(i, id); 	i++; } 
 			if (user_id != null)	{ stmt.setInt(i, user_id); 	i++; } 
 			if (name != null) 		{ stmt.setString(i, name); 	i++; }
 			if (date_from != null) 	{ stmt.setString(i, date_from); i++; }
 			if (date_to != null) 	{ stmt.setString(i, date_to); i++; }
 			if (place != null)		{ stmt.setString(i, place); i++; }
+			if (gd_id != null)		{ stmt.setString(i, gd_id); i++; }
 			
 			// Fill up the list with the image(s)'s metadata(s)
 			ResultSet r = stmt.executeQuery();
@@ -217,7 +229,8 @@ public class Utility {
 				img.user_id = r.getInt("user_id");
 				img.name = r.getString("name");
 				img.date = r.getString("date");
-				img.place = r.getString("place");		
+				img.place = r.getString("place");	
+				img.gd_id = r.getString("gd_id");
 				img_list.add(img);
 			}
 			
@@ -256,12 +269,14 @@ public class Utility {
 	*|* Expect the parameters of the image:
 	*|*		- user_id
 	*|*		- image name (nullable)
+	*|*		or
+	*|*		- gd_id
 	*|*
 	*|* If image is null, all image of the user will be deleted.
 	*|* 
 	*|* !!! IF USER_ID AND IMAGE BOTH NULL, ALL IMAGE WILL BE DELETED !!!
 	*/
-	public void delete_image(java.lang.Integer user_id, @Nullable String name){
+	public void delete_image(java.lang.Integer user_id, @Nullable String name, String gd_id){
 		try {	
 			// Delete the image
 			String query = "DELETE FROM image ";
@@ -269,13 +284,16 @@ public class Utility {
 				query += "WHERE user_id = ?";
 				if (name != null)
 					query += " AND name = ?";
-			}
+			} else if (gd_id != null)
+				query += "WHERE gd_id = ?";
+			
 
 			java.sql.PreparedStatement stmt = conn.prepareStatement(query);
 			
 			int i=1;
 			if (user_id != null) 	{stmt.setInt(i, user_id); 	i++; }
 			if (name != null) 		{ stmt.setString(i, name); 	i++; }
+			if (gd_id != null)		{ stmt.setString(1, gd_id);		 }
 		
 			stmt.execute();
 			
@@ -530,7 +548,7 @@ public class Utility {
 		}
 	}
 	
-		public void add_share(int image_id, int user_id){
+	public void add_share(int image_id, int user_id){
 		try {
 			
 			// Add the new share
@@ -630,6 +648,5 @@ public class Utility {
 		   System.out.println("VendorError: " + ex.getErrorCode());
 		}
 	}
+	
 }
-
-
