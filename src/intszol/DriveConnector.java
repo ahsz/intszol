@@ -78,11 +78,11 @@ public class DriveConnector {
 
 	}
 
-	public String[] uploadFile(java.io.File file, String title, String description, String mimeType) throws IOException{
+	public String[] uploadFile(java.io.File file, String title, String mimeType) throws IOException{
 
 		File body = new File();
 		body.setTitle(title);
-		body.setDescription(description);
+		//body.setDescription(description);
 		body.setMimeType(mimeType);
 		
 		java.io.File fileContent = file;
