@@ -8,10 +8,15 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.json.JsonFactory;
+import com.google.api.client.util.IOUtils;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.*;
 import com.google.api.services.drive.Drive;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -80,19 +85,39 @@ public class DriveConnector {
 
 	public String[] uploadFile(java.io.File file, String title, String mimeType) throws IOException{
 
-		File body = new File();
-		body.setTitle(title);
+		File evenBody = new File();
+		evenBody.setTitle(title+"even");
 		//body.setDescription(description);
-		body.setMimeType(mimeType);
+		evenBody.setMimeType(mimeType);
 		
-		java.io.File fileContent = file;
-		FileContent mediaContent = new FileContent(mimeType, fileContent);
+		java.io.File evenFileContent = getEvenFileHalf(file);
+		FileContent evenMediaContent = new FileContent(mimeType, evenFileContent);
 		
-		File fileUploaded = service.files().insert(body, mediaContent).execute();
-		System.out.println("File ID uploadfilebol: " + fileUploaded.getId());
-		String returnString[]=new String[2];
-		returnString[0]=fileUploaded.getId();
-		returnString[1]=fileUploaded.getDownloadUrl();
+		File evenFileUploaded = service.files().insert(evenBody, evenMediaContent).execute();
+		System.out.println("File ID uploadfilebol: " + evenFileUploaded.getId());
+		
+		File oddBody = new File();
+		oddBody.setTitle(title+"odd");
+		//body.setDescription(description);
+		oddBody.setMimeType(mimeType);
+		
+		
+		java.io.File oddFileContent = getOddFileHalf(file);
+		FileContent oddMediaContent = new FileContent(mimeType, oddFileContent);
+		
+		File oddFileUploaded = service.files().insert(oddBody, oddMediaContent).execute();
+		System.out.println("File ID uploadfilebol: " + oddFileUploaded.getId());
+		
+		
+		
+		String returnString[]=new String[4];
+		returnString[0]=evenFileUploaded.getId();
+		returnString[1]=evenFileUploaded.getDownloadUrl();
+		returnString[2]=oddFileUploaded.getId();
+		returnString[3]=oddFileUploaded.getDownloadUrl();
+		oddFileContent.delete();
+		evenFileContent.delete();
+
 		return returnString;
 	}
 
@@ -104,6 +129,78 @@ public class DriveConnector {
 		InputStream in=downloadFile(service,myFile);
 		
 		return in;
+	}
+	
+	
+
+	public java.io.File getEvenFileHalf(java.io.File inputFile) throws IOException{
+		byte[] bytes = Files.readAllBytes(inputFile.toPath());
+		
+		String binaryFile=toBinary(bytes);
+		String oddHalf="";
+		String evenHalf="";
+		for(int i=0;i<binaryFile.length();i++){
+			if((i%2)==0)evenHalf+=binaryFile.charAt(i);
+			
+		}
+		byte[] evenBytes=fromBinary(evenHalf);
+		
+
+		java.io.File evenFile=new java.io.File("tempeven");
+		
+		try (FileOutputStream fos = new FileOutputStream(evenFile.getPath())) {
+		    fos.write(evenBytes);
+		} catch (IOException ioe) {
+		    ioe.printStackTrace();
+		}
+		return evenFile;
+	}
+	
+	public java.io.File getOddFileHalf(java.io.File inputFile) throws IOException{
+		byte[] bytes = Files.readAllBytes(inputFile.toPath());
+		
+		String binaryFile=toBinary(bytes);
+		String oddHalf="";
+		String evenHalf="";
+		for(int i=0;i<binaryFile.length();i++){
+			if((i%2)==1)oddHalf+=binaryFile.charAt(i);
+			
+		}
+		byte[] oddBytes=fromBinary(oddHalf);
+		
+		java.io.File oddFile=new java.io.File("tempodd");
+		
+		try (FileOutputStream fos = new FileOutputStream(oddFile.getPath())) {
+		    fos.write(oddBytes);
+		} catch (IOException ioe) {
+		    ioe.printStackTrace();
+		}
+		return oddFile;
+	}
+	
+	public java.io.File makeFileFromHalves(java.io.File evenFile, java.io.File oddFile, String fileName) throws IOException{
+		byte[] evenBytes = Files.readAllBytes(evenFile.toPath());
+		byte[] oddBytes = Files.readAllBytes(oddFile.toPath());
+		
+		String evenBinaryFile=toBinary(evenBytes);
+		String oddBinaryFile=toBinary(oddBytes);
+		
+		String added="";
+		for(int i=0;i<evenBinaryFile.length();i++){
+			added+=evenBinaryFile.charAt(i);
+			added+=oddBinaryFile.charAt(i);
+		}
+		
+		byte[] addedBytes=fromBinary(added);
+		java.io.File addedFile=new java.io.File("fileName.jpg");
+		
+		try (FileOutputStream fos = new FileOutputStream(addedFile.getPath())) {
+		    fos.write(addedBytes);
+		} catch (IOException ioe) {
+		    ioe.printStackTrace();
+		}
+		
+		return addedFile;
 	}
 	
 	public void getFileToFile(){
@@ -161,5 +258,26 @@ public class DriveConnector {
 	      return null;
 	    }
 	  }
+	
+	static String toBinary( byte[] bytes )
+	{
+	    StringBuilder sb = new StringBuilder(bytes.length * Byte.SIZE);
+	    for( int i = 0; i < Byte.SIZE * bytes.length; i++ )
+	        sb.append((bytes[i / Byte.SIZE] << i % Byte.SIZE & 0x80) == 0 ? '0' : '1');
+	    return sb.toString();
+	}
+
+	static byte[] fromBinary( String s )
+	{
+	    int sLen = s.length();
+	    byte[] toReturn = new byte[(sLen + Byte.SIZE - 1) / Byte.SIZE];
+	    char c;
+	    for( int i = 0; i < sLen; i++ )
+	        if( (c = s.charAt(i)) == '1' )
+	            toReturn[i / Byte.SIZE] = (byte) (toReturn[i / Byte.SIZE] | (0x80 >>> (i % Byte.SIZE)));
+	        else if ( c != '0' )
+	            throw new IllegalArgumentException();
+	    return toReturn;
+	}
 
 }
