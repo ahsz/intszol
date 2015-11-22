@@ -53,7 +53,7 @@ public class UploadPanel extends JPanel {
 							String uploadedOddFileID=returnString[2];
 							String uploadedOddFileUrl=returnString[3];
 							
-							int imageID = MainWindow.ut.add_image(1, file.getName(),new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), "Budapest", uploadedEvenFileID, uploadedEvenFileUrl, uploadedOddFileID, uploadedOddFileUrl);
+							int imageID = MainWindow.ut.add_image(2, file.getName(),new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), "Budapest", uploadedEvenFileID, uploadedEvenFileUrl, uploadedOddFileID, uploadedOddFileUrl);
 				    		//driveInstance.getFileToFile();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block

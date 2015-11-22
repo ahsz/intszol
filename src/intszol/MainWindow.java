@@ -40,7 +40,7 @@ public class MainWindow {
 		
 		ut.delete_annotation(null, null);
 		ut.delete_comment(null, null);
-		ut.delete_image(null, null, null, null);
+		//ut.delete_image(null, null, null, null);
 		
 		System.out.print("Get User metadatas with User_id=1" + '\n');
 		System.out.print("---------------------------------" + '\n');
@@ -51,7 +51,7 @@ public class MainWindow {
 		
 		
 		// New Images
-		System.out.print("Adding new Images" + '\n');
+		/*System.out.print("Adding new Images" + '\n');
 		System.out.print("-----------------" + '\n');
 		
 		i = ut.add_image(1, "kep_1", "20150101", "Budapest", "ngaxgtj52xmyL", "www.akarmi1.hu", "nghasj52xmyL", "www.akarmi9.hu");
@@ -71,7 +71,7 @@ public class MainWindow {
 		System.out.print("User 2, kep_3: " + i + '\n');
 		i = ut.add_image(2, "kep_4", null, null, "ngajsdhsexmyL", "www.akarmi8.hu", "ngaxghsdhmyL", "www.akarmi16.hu");
 		System.out.print("User 2, kep_4: " + i + '\n' + '\n' + '\n');
-		
+		*/
 		
 		// Search User_id=2 User's Images
 		System.out.print("Get Images with User_id=2" + '\n');

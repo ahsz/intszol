@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -110,7 +111,7 @@ public class DriveConnector {
 		
 		File oddFileUploaded = service.files().insert(oddBody, oddMediaContent).execute();
 		System.out.println("File ID uploadfilebol: " + oddFileUploaded.getId());
-		
+		System.out.println("File URL uploadfilebol: " + oddFileUploaded.getDownloadUrl());
 		
 		
 		String returnString[]=new String[4];
@@ -180,6 +181,30 @@ public class DriveConnector {
 		}
 		return oddFile;
 	}
+	
+	public  java.io.File getFile(String gd_id, String gd_url, String gd_id2, String gd_url2, String fileName) throws IOException{
+
+		InputStream isEven=getFileToInputStream(gd_id, gd_url);
+		InputStream isOdd=getFileToInputStream(gd_id2, gd_url2);
+		
+	    byte[] bufferEven = new byte[isEven.available()];
+	    isEven.read(bufferEven);
+		java.io.File targetFileEven = new java.io.File("temp_downloaded_even");
+	    OutputStream outStreamEven = new FileOutputStream(targetFileEven);
+	    outStreamEven.write(bufferEven);
+	    
+	    byte[] bufferOdd = new byte[isOdd.available()];
+	    isOdd.read(bufferOdd);
+	    java.io.File targetFileOdd = new java.io.File("temp_downloaded_odd");
+	    OutputStream outStreamOdd = new FileOutputStream(targetFileOdd);
+	    outStreamOdd.write(bufferOdd);
+
+
+		return makeFileFromHalves(targetFileEven, targetFileOdd, fileName);
+
+
+	}
+	
 	
 	public java.io.File makeFileFromHalves(java.io.File evenFile, java.io.File oddFile, String fileName) throws IOException{
 		byte[] evenBytes = Files.readAllBytes(evenFile.toPath());

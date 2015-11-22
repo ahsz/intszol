@@ -40,7 +40,7 @@ public class SearchPanel extends JPanel {
 	
 	private ArrayList<Image> imgList;
 	private ArrayList<Image> filteredImages;
-	
+	DriveConnector driveInstance = DriveConnector.getInstance();
 	/**
 	 * Create the panel.
 	 */
@@ -110,7 +110,7 @@ public class SearchPanel extends JPanel {
 		    btnSearch.addActionListener(new ActionListener() {
 		    	public void actionPerformed(ActionEvent e) {
 		    		//csak tesztnek beegetve
-		    		driveInstance.getFileToFile();
+		    		//driveInstance.getFileToFile();
 		    		
 		    		imgList.clear();
 		    		btnRight.setVisible(false);
@@ -146,6 +146,7 @@ public class SearchPanel extends JPanel {
 		    		}
 		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null).size() !=0){
 		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null);
+		    			
 		    			btnRight.setVisible(true);;
 						btnLeft.setVisible(true);;
 						txtTitleComment.setVisible(true);;
@@ -313,6 +314,18 @@ public class SearchPanel extends JPanel {
 						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 					else
 						txtComment.setText("");
+					
+					try {
+						driveInstance.getFile(imgList.get(currentImgIndex - 1).gd_id, imgList.get(currentImgIndex - 1).gd_url, imgList.get(currentImgIndex - 1).gd_id2, imgList.get(currentImgIndex - 1).gd_url2, imgList.get(currentImgIndex - 1).name);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+					/*imgList.get(currentImgIndex - 1).gd_id;
+					
+					imgList.get(currentImgIndex - 1).gd_url;
+					imgList.get(currentImgIndex - 1).gd_id2;
+					imgList.get(currentImgIndex - 1).gd_url2;*/
 				}
 			}
 		});
