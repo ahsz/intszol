@@ -187,20 +187,9 @@ public class DriveConnector {
 		InputStream isEven=getFileToInputStream(gd_id, gd_url);
 		InputStream isOdd=getFileToInputStream(gd_id2, gd_url2);
 		
-	    byte[] bufferEven = new byte[isEven.available()];
-	    isEven.read(bufferEven);
-		java.io.File targetFileEven = new java.io.File("temp_downloaded_even");
-	    OutputStream outStreamEven = new FileOutputStream(targetFileEven);
-	    outStreamEven.write(bufferEven);
-	    
-	    byte[] bufferOdd = new byte[isOdd.available()];
-	    isOdd.read(bufferOdd);
-	    java.io.File targetFileOdd = new java.io.File("temp_downloaded_odd");
-	    OutputStream outStreamOdd = new FileOutputStream(targetFileOdd);
-	    outStreamOdd.write(bufferOdd);
+		
 
-
-		return makeFileFromHalves(targetFileEven, targetFileOdd, fileName);
+		return makeFileFromHalves(getFileToFile( gd_id, gd_url, "temp_downloaded_even"), getFileToFile( gd_id2, gd_url2, "temp_downloaded_odd"), fileName);
 
 
 	}
@@ -213,29 +202,45 @@ public class DriveConnector {
 		String evenBinaryFile=toBinary(evenBytes);
 		String oddBinaryFile=toBinary(oddBytes);
 		
-		String added="";
-		for(int i=0;i<evenBinaryFile.length();i++){
-			added+=evenBinaryFile.charAt(i);
-			added+=oddBinaryFile.charAt(i);
+		StringBuilder added=new StringBuilder("");
+		int max1=evenBinaryFile.length();
+		int max2=oddBinaryFile.length();
+		boolean diff=max1!=max2;
+		
+		int min=0;
+		if (evenBinaryFile.length()<oddBinaryFile.length())min=evenBinaryFile.length();
+		else min=oddBinaryFile.length();
+		
+		for(int i=0;i<min;i++){
+			added.append(evenBinaryFile.charAt(i));
+			added.append(oddBinaryFile.charAt(i));
 		}
 		
-		byte[] addedBytes=fromBinary(added);
-		java.io.File addedFile=new java.io.File("fileName.jpg");
+		if(diff){
+			byte[] myByte={0};
+			added.append(toBinary(myByte));
+		}
+		
+		byte[] addedBytes=fromBinary(added.toString());
+		java.io.File addedFile=new java.io.File(fileName);
 		
 		try (FileOutputStream fos = new FileOutputStream(addedFile.getPath())) {
 		    fos.write(addedBytes);
 		} catch (IOException ioe) {
 		    ioe.printStackTrace();
 		}
-		
+		evenFile.delete();
+		oddFile.delete();
 		return addedFile;
 	}
 	
-	public void getFileToFile(){
-		final Path destination = Paths.get("jovagy.jpg");
+	public java.io.File getFileToFile(String gd_id, String gd_url, String name){
+		final Path destination = Paths.get(name);
+		
 		try (
 			//teszt miatt ilyen a parameter, ki kell venni
-		    final InputStream in = getFileToInputStream("0B5a5__T-xkoVZmFOVUVlaWZqRUk","https://drive.google.com/file/d/0B5a5__T-xkoVaWRKY2VJcEZIZkU/view?usp=drivesdk");
+				final InputStream in = getFileToInputStream(gd_id,gd_url);
+			//final InputStream in = getFileToInputStream("0B5a5__T-xkoVZmFOVUVlaWZqRUk","https://drive.google.com/file/d/0B5a5__T-xkoVaWRKY2VJcEZIZkU/view?usp=drivesdk");
 		) {
 		    try {
 				Files.copy(in, destination);
@@ -247,6 +252,7 @@ public class DriveConnector {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		return new java.io.File(name);
 		
 	}
 	
