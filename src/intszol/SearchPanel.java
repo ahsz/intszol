@@ -102,7 +102,7 @@ public class SearchPanel extends JPanel {
 		    
 		    filteredImages = new ArrayList<>();
 		    imgList = new ArrayList<Image>();
-			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null, null,null);
+			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null,null, null,null);
 			
 			DriveConnector driveInstance = DriveConnector.getInstance();
 		    
@@ -127,7 +127,7 @@ public class SearchPanel extends JPanel {
 		    			commentList = MainWindow.ut.get_comment(null, 2); //TODO itt be van égetve a userID, ha több usert akarunk akkor dinamikussá kell ezt tenni
 		    			for (int i=0; i<commentList.size(); i++){
 							if(commentList.get(i).content.toLowerCase().contains((String)(txtSearchArea.getText()).toLowerCase())){
-		    					filteredImages.addAll((ArrayList<Image>) MainWindow.ut.get_image(commentList.get(i).image_id, 2, null, null, null, null,null));
+		    					filteredImages.addAll((ArrayList<Image>) MainWindow.ut.get_image(commentList.get(i).image_id, 2, null,null, null, null, null,null));
 		    					if(filteredImages.size() > 0){
 		    						btnRight.setVisible(true);;
 		    						btnLeft.setVisible(true);;
@@ -144,8 +144,8 @@ public class SearchPanel extends JPanel {
 		    			}
 
 		    		}
-		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null).size() !=0){
-		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null);
+		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null).size() !=0){
+		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null);
 		    			btnRight.setVisible(true);;
 						btnLeft.setVisible(true);;
 						txtTitleComment.setVisible(true);;

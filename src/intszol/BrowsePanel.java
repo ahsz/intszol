@@ -137,7 +137,7 @@ public class BrowsePanel extends JPanel {
 		
 		List<Image> img_list = new ArrayList<Image>();
 		System.out.print("ID" + "\t" + "USER_ID" + "\t" + "NAME" + "\t" + "DATE" + "\t\t" + "PLACE" + "\n");
-		img_list = MainWindow.ut.get_image(null, 2, null, null, null, null,null);
+		img_list = MainWindow.ut.get_image(null, 2, null, null, null, null,null,null);
 		for (int i=0; i<img_list.size(); i++){
 			System.out.print(img_list.get(i) + "\n");
 		}

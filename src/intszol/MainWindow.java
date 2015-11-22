@@ -39,7 +39,7 @@ public class MainWindow {
 		//ut = new Utility(); {
 
 		
-		Utility ut = new Utility();
+		//Utility ut = new Utility();
 		int i;
 		
 		ut.delete_annotation(null, null);
