@@ -30,16 +30,12 @@ public class MainWindow {
 	
 
 	static { ut = new Utility(); }
-	// probaaa
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 
-		//ut = new Utility(); {
-
-		
-		//Utility ut = new Utility();
 		int i;
 		
 		ut.delete_annotation(null, null);
