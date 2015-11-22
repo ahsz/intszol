@@ -71,6 +71,8 @@ public class DriveConnector {
 		return url;
 	}
 
+	//TODO download fuggveny ami meghivja ket reszbol az osszerakast
+	
 	public void setCode(String code) throws IOException {
 		this.code = code;
 		GoogleTokenResponse response = flow.newTokenRequest(code)
@@ -135,15 +137,15 @@ public class DriveConnector {
 
 	public java.io.File getEvenFileHalf(java.io.File inputFile) throws IOException{
 		byte[] bytes = Files.readAllBytes(inputFile.toPath());
-		
+		StringBuilder evenHalf=new StringBuilder("");
 		String binaryFile=toBinary(bytes);
 		String oddHalf="";
-		String evenHalf="";
+		//String evenHalf="";
 		for(int i=0;i<binaryFile.length();i++){
-			if((i%2)==0)evenHalf+=binaryFile.charAt(i);
+			if((i%2)==0)evenHalf.append(binaryFile.charAt(i));
 			
 		}
-		byte[] evenBytes=fromBinary(evenHalf);
+		byte[] evenBytes=fromBinary(evenHalf.toString());
 		
 
 		java.io.File evenFile=new java.io.File("tempeven");
@@ -158,15 +160,15 @@ public class DriveConnector {
 	
 	public java.io.File getOddFileHalf(java.io.File inputFile) throws IOException{
 		byte[] bytes = Files.readAllBytes(inputFile.toPath());
-		
+		StringBuilder oddHalf=new StringBuilder("");
 		String binaryFile=toBinary(bytes);
-		String oddHalf="";
+		//String oddHalf="";
 		String evenHalf="";
 		for(int i=0;i<binaryFile.length();i++){
-			if((i%2)==1)oddHalf+=binaryFile.charAt(i);
+			if((i%2)==1)oddHalf.append(binaryFile.charAt(i));
 			
 		}
-		byte[] oddBytes=fromBinary(oddHalf);
+		byte[] oddBytes=fromBinary(oddHalf.toString());
 		
 		java.io.File oddFile=new java.io.File("tempodd");
 		
