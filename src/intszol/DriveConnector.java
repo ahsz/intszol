@@ -97,6 +97,7 @@ public class DriveConnector {
 		
 		File evenFileUploaded = service.files().insert(evenBody, evenMediaContent).execute();
 		System.out.println("File ID uploadfilebol: " + evenFileUploaded.getId());
+		System.out.println("File URL uploadfilebol: " + evenFileUploaded.getDownloadUrl());
 		
 		File oddBody = new File();
 		oddBody.setTitle(title+"odd");

@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class UploadPanel extends JPanel {
 	private JTextField txtUpload;
@@ -46,8 +48,12 @@ public class UploadPanel extends JPanel {
 						try {
 							//returnString = driveInstance.uploadFile(new java.io.File("maxresdefault.jpg"),"budspencer","kiraly","image/jpg");
 							returnString = driveInstance.uploadFile(file,file.getName(),"image/jpg");
-							String uploadedFileID=returnString[0];
-							String uploadedFileUrl=returnString[1];
+							String uploadedEvenFileID=returnString[0];
+							String uploadedEvenFileUrl=returnString[1];
+							String uploadedOddFileID=returnString[2];
+							String uploadedOddFileUrl=returnString[3];
+							
+							int imageID = MainWindow.ut.add_image(1, file.getName(),new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), "Budapest", uploadedEvenFileID, uploadedEvenFileUrl, uploadedOddFileID, uploadedOddFileUrl);
 				    		//driveInstance.getFileToFile();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
@@ -56,7 +62,7 @@ public class UploadPanel extends JPanel {
 						
 						//ezt a kettot fel kell tolni DB-be
 			            //This is where a real application would open the file.
-			            System.out.println("Opening: " + file.getName());
+			            System.out.println("Uploading: " + file.getName());
 						txtUpload.setText("Kep feltoltve!");
 		            	 
 		            	 
