@@ -28,10 +28,15 @@ public class MainWindow {
 	private SearchPanel searchPanel = new SearchPanel();
 	public static Utility ut;
 	
+
+	static { ut = new Utility(); }
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+
+		//ut = new Utility(); {
 
 		
 		Utility ut = new Utility();
@@ -145,7 +150,7 @@ public class MainWindow {
 		
 		System.out.print("\n" + "\n");
 		
-	}
+	
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -194,7 +199,7 @@ public class MainWindow {
 		
 		JMenuItem menuItemBrowseImages = new JMenuItem("K\u00E9pek b\u00F6ng\u00E9sz\u00E9se");
 		menuFile.add(menuItemBrowseImages);
-	    menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel));
+	    //menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel));
 
 				
 		JMenuItem menuItemUploadImages = new JMenuItem("K\u00E9pek felt\u00F6lt\u00E9se");
@@ -203,7 +208,7 @@ public class MainWindow {
 		
 		JMenuItem menuItemSearch = new JMenuItem("Keres\u00E9s");
 		menuFile.add(menuItemSearch);
-		menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel));
+		//menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel));
 		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
