@@ -46,7 +46,7 @@ public class UploadPanel extends JPanel {
 		            	 
 		 				String[] returnString;
 						try {
-							//returnString = driveInstance.uploadFile(new java.io.File("maxresdefault.jpg"),"budspencer","kiraly","image/jpg");
+
 							returnString = driveInstance.uploadFile(file,file.getName(),"image/jpg");
 							String uploadedEvenFileID=returnString[0];
 							String uploadedEvenFileUrl=returnString[1];
@@ -54,14 +54,12 @@ public class UploadPanel extends JPanel {
 							String uploadedOddFileUrl=returnString[3];
 							
 							int imageID = MainWindow.ut.add_image(2, file.getName(),new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()), "Budapest", uploadedEvenFileID, uploadedEvenFileUrl, uploadedOddFileID, uploadedOddFileUrl);
-				    		//driveInstance.getFileToFile();
+
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 						
-						//ezt a kettot fel kell tolni DB-be
-			            //This is where a real application would open the file.
 			            System.out.println("Uploading: " + file.getName());
 						txtUpload.setText("Kep feltoltve!");
 		            	 

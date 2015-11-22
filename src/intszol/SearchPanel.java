@@ -316,7 +316,7 @@ public class SearchPanel extends JPanel {
 						txtComment.setText("");
 					
 					try {
-						driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex - 1).name);
+						driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
