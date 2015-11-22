@@ -199,7 +199,7 @@ public class MainWindow {
 		
 		JMenuItem menuItemBrowseImages = new JMenuItem("K\u00E9pek b\u00F6ng\u00E9sz\u00E9se");
 		menuFile.add(menuItemBrowseImages);
-	    //menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel));
+	    menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel));
 
 				
 		JMenuItem menuItemUploadImages = new JMenuItem("K\u00E9pek felt\u00F6lt\u00E9se");
@@ -208,7 +208,7 @@ public class MainWindow {
 		
 		JMenuItem menuItemSearch = new JMenuItem("Keres\u00E9s");
 		menuFile.add(menuItemSearch);
-		//menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel));
+		menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel));
 		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
