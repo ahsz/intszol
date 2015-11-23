@@ -30,7 +30,6 @@ public class SearchPanel extends JPanel {
 	private JButton btnLeft;
 	private JTextField txtTitleComment;
 	private JTextField txtComment;
-	private JButton btnModifyImage;
 	private JButton btnDeleteImage;
 	private JButton btnShareImage;
 	private JTextField txtImage;
@@ -67,8 +66,6 @@ public class SearchPanel extends JPanel {
 		    btnLeft.setIcon(new ImageIcon(img));
 		    
 		    JPanel commentPanel = new JPanel();
-		    
-		    btnModifyImage = new JButton("M\u00F3dos\u00EDt\u00E1s");
 		    
 		    btnDeleteImage = new JButton("T\u00F6rl\u00E9s");
 		    
@@ -122,7 +119,6 @@ public class SearchPanel extends JPanel {
 		    		btnLeft.setVisible(false);
 		    		txtTitleComment.setVisible(false);
 		    		txtComment.setVisible(false);
-		    		btnModifyImage.setVisible(false);
 		    		btnDeleteImage.setVisible(false);
 		    		btnShareImage.setVisible(false);
 		    		txtImage.setVisible(false);
@@ -138,7 +134,6 @@ public class SearchPanel extends JPanel {
 		    						btnLeft.setVisible(true);;
 		    						txtTitleComment.setVisible(true);;
 		    						txtComment.setVisible(true);;
-		    						btnModifyImage.setVisible(true);;
 		    						btnDeleteImage.setVisible(true);;
 		    						btnShareImage.setVisible(true);
 		    						txtImage.setVisible(true);
@@ -156,7 +151,6 @@ public class SearchPanel extends JPanel {
 						btnLeft.setVisible(true);;
 						txtTitleComment.setVisible(true);;
 						txtComment.setVisible(true);;
-						btnModifyImage.setVisible(true);;
 						btnDeleteImage.setVisible(true);;
 						btnShareImage.setVisible(true);
 						txtImage.setVisible(true);
@@ -197,9 +191,7 @@ public class SearchPanel extends JPanel {
 		    						.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
 		    						.addGroup(groupLayout.createSequentialGroup()
 		    							.addComponent(btnDeleteImage)
-		    							.addGap(147)
-		    							.addComponent(btnModifyImage)
-		    							.addPreferredGap(ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+		    							.addPreferredGap(ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
 		    							.addComponent(btnShareImage))
 		    						.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
 		    					.addGap(18)
@@ -230,8 +222,8 @@ public class SearchPanel extends JPanel {
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 		    				.addComponent(txtSearchArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		    				.addComponent(btnSearch))
-		    			.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-		    				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+		    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		    				.addGroup(groupLayout.createSequentialGroup()
 		    					.addGap(123)
 		    					.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
 		    				.addGroup(groupLayout.createSequentialGroup()
@@ -240,7 +232,6 @@ public class SearchPanel extends JPanel {
 		    			.addPreferredGap(ComponentPlacement.UNRELATED)
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 		    				.addComponent(btnShareImage)
-		    				.addComponent(btnModifyImage)
 		    				.addComponent(btnDeleteImage))
 		    			.addGap(18)
 		    			.addComponent(commentPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
@@ -248,7 +239,7 @@ public class SearchPanel extends JPanel {
 		    		.addGroup(groupLayout.createSequentialGroup()
 		    			.addGap(184)
 		    			.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(269, Short.MAX_VALUE))
+		    			.addContainerGap(359, Short.MAX_VALUE))
 		    );
 		    
 		    txtImage = new JTextField();
@@ -287,7 +278,6 @@ public class SearchPanel extends JPanel {
 		btnLeft.setVisible(false);
 		txtTitleComment.setVisible(false);
 		txtComment.setVisible(false);
-		btnModifyImage.setVisible(false);
 		btnDeleteImage.setVisible(false);
 		btnShareImage.setVisible(false);
 		txtImage.setVisible(false);

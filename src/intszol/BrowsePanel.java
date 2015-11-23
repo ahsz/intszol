@@ -26,7 +26,6 @@ public class BrowsePanel extends JPanel {
 	private JButton btnLeft;
 	private JTextField txtTitleComment;
 	private JTextField txtComment;
-	private JButton btnModifyImage;
 	private JButton btnDeleteImage;
 	private JButton btnShareImage;
 	private JTextField txtImage;
@@ -59,8 +58,6 @@ public class BrowsePanel extends JPanel {
 		    
 		    JPanel commentPanel = new JPanel();
 		    
-		    btnModifyImage = new JButton("M\u00F3dos\u00EDt\u00E1s");
-		    
 		    btnDeleteImage = new JButton("T\u00F6rl\u00E9s");
 		    
 		    btnShareImage = new JButton("Megoszt\u00E1s");
@@ -75,9 +72,7 @@ public class BrowsePanel extends JPanel {
 		    				.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
 		    				.addGroup(groupLayout.createSequentialGroup()
 		    					.addComponent(btnDeleteImage)
-		    					.addGap(146)
-		    					.addComponent(btnModifyImage)
-		    					.addPreferredGap(ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+		    					.addPreferredGap(ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
 		    					.addComponent(btnShareImage))
 		    				.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))
 		    			.addGap(18)
@@ -100,11 +95,10 @@ public class BrowsePanel extends JPanel {
 		    			.addGap(29)
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 		    				.addComponent(btnDeleteImage)
-		    				.addComponent(btnModifyImage)
 		    				.addComponent(btnShareImage))
 		    			.addGap(29)
 		    			.addComponent(commentPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(41, Short.MAX_VALUE))
+		    			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		    );
 		    
 		    txtImage = new JTextField();
