@@ -199,6 +199,7 @@ public class BrowsePanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				driveInstance.deleteFile( imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2 );
 				MainWindow.ut.delete_image(null, null, imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2);
+				imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null, null,null,null);
 
 			}
 		});
