@@ -135,7 +135,6 @@ public class DriveConnector {
 		return in;
 	}
 	
-	
 
 	public java.io.File getEvenFileHalf(java.io.File inputFile) throws IOException{
 		byte[] bytes = Files.readAllBytes(inputFile.toPath());
@@ -184,9 +183,11 @@ public class DriveConnector {
 	
 	public  java.io.File getFile(String gd_id, String gd_url, String gd_id2, String gd_url2, String fileName) throws IOException{
 
+		
+		
+		
 		InputStream isEven=getFileToInputStream(gd_id, gd_url);
 		InputStream isOdd=getFileToInputStream(gd_id2, gd_url2);
-		
 		
 
 		return makeFileFromHalves(getFileToFile( gd_id, gd_url, "temp_downloaded_even"), getFileToFile( gd_id2, gd_url2, "temp_downloaded_odd"), fileName);
@@ -314,4 +315,17 @@ public class DriveConnector {
 	    return toReturn;
 	}
 
+
+	public void deleteFile(String gd_id, String gd_id2){
+		try {
+			service.files().delete(gd_id).execute();
+			service.files().delete(gd_id2).execute();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 }
+

@@ -18,6 +18,7 @@ import javax.swing.JTextPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
 
 public class BrowsePanel extends JPanel {
@@ -192,6 +193,15 @@ public class BrowsePanel extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
+		
+		
+		btnDeleteImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				driveInstance.deleteFile( imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2 );
+				MainWindow.ut.delete_image(null, null, imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2);
+
+			}
+		});
 		
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

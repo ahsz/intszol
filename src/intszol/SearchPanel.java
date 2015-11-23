@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.google.api.client.googleapis.media.MediaHttpDownloader.DownloadState;
+
 import javax.swing.JLabel;
 
 public class SearchPanel extends JPanel {
@@ -376,6 +377,14 @@ public class SearchPanel extends JPanel {
 		    		} 
 
 				}
+			}
+		});
+		
+		btnDeleteImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				driveInstance.deleteFile( imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2 );
+				MainWindow.ut.delete_image(null, null, imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2);
+
 			}
 		});
 	}
