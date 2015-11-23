@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 public class UploadPanel extends JPanel {
 	private JTextField txtUpload;
+	private DriveConnector driveInstance;
 
 	File file=new java.io.File("");
 	
@@ -30,7 +31,7 @@ public class UploadPanel extends JPanel {
 		txtUpload.setText("Felt\u00F6lt\u00E9s:");
 		txtUpload.setColumns(20);
 		
-		DriveConnector driveInstance = DriveConnector.getInstance();
+		driveInstance = DriveConnector.getInstance();
 		final JFileChooser fc = new JFileChooser();
 		JButton btnSelectFiles = new JButton("F\u00E1jl kiv\u00E1laszt\u00E1sa");
 		btnSelectFiles.addActionListener(new ActionListener() {

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import com.google.api.client.googleapis.media.MediaHttpDownloader.DownloadState;
+import javax.swing.JLabel;
 
 public class SearchPanel extends JPanel {
 
@@ -37,10 +41,11 @@ public class SearchPanel extends JPanel {
 	private JTextField txtSearchArea;
 	private JRadioButton radioBtnSearchForComments;
 	private JRadioButton radioButtonSearchForDate;
+	private JLabel imageLabel;
 	
 	private ArrayList<Image> imgList;
 	private ArrayList<Image> filteredImages;
-	DriveConnector driveInstance = DriveConnector.getInstance();
+	private DriveConnector driveInstance = DriveConnector.getInstance();
 	/**
 	 * Create the panel.
 	 */
@@ -104,7 +109,7 @@ public class SearchPanel extends JPanel {
 		    imgList = new ArrayList<Image>();
 			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, null, null,null, null,null);
 			
-			DriveConnector driveInstance = DriveConnector.getInstance();
+			driveInstance = DriveConnector.getInstance();
 		    
 			JButton btnSearch = new JButton("Keres\u00E9s");
 		    btnSearch.addActionListener(new ActionListener() {
@@ -159,6 +164,19 @@ public class SearchPanel extends JPanel {
 		    		
 		    		//TODO ezzel lehet lekerni a filet
 		    		//InputStream getFileToInputStream(String flieID, String fileUrl)
+		    		
+		    		File downloadedImage;
+		    		ImageIcon icon;
+		    		try {
+		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
+		    			BufferedImage img=ImageIO.read(downloadedImage);
+		    	        icon=new ImageIcon(img);
+		    			imageLabel.setIcon(icon);
+		    			
+		    		} catch (IOException e1) {
+		    			// TODO Auto-generated catch block
+		    			e1.printStackTrace();
+		    		} 
 		    		
 		    		if(imgList.size()==0)
 		    			JOptionPane.showMessageDialog(SearchPanel.this,
@@ -236,7 +254,6 @@ public class SearchPanel extends JPanel {
 		    
 		    txtImage = new JTextField();
 		    txtImage.setEditable(false);
-		    imagePanel.add(txtImage);
 		    txtImage.setColumns(10);
 		    
 		    txtTitleComment = new JTextField();
@@ -281,10 +298,38 @@ public class SearchPanel extends JPanel {
 		if(radioBtnSearchForComments.isSelected())
 			txtSearchArea.setText("Írja be a megjegyzést, melyre rákeresne!");
 		
-		currentImgId = imgList.get(0).id;
-		currentImgIndex = 0;
-		txtImage.setText(imgList.get(currentImgIndex).name);
-		if(MainWindow.ut.get_comment(currentImgId, null) != null)
+		if(imgList.size() != 0){
+			currentImgId = imgList.get(0).id;
+			currentImgIndex = 0;
+			txtImage.setText(imgList.get(currentImgIndex).name);
+		}
+		
+		imageLabel = new JLabel("");
+		GroupLayout gl_imagePanel = new GroupLayout(imagePanel);
+		gl_imagePanel.setHorizontalGroup(
+			gl_imagePanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_imagePanel.createSequentialGroup()
+					.addGroup(gl_imagePanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_imagePanel.createSequentialGroup()
+							.addGap(31)
+							.addComponent(imageLabel, GroupLayout.PREFERRED_SIZE, 465, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_imagePanel.createSequentialGroup()
+							.addGap(213)
+							.addComponent(txtImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(31, Short.MAX_VALUE))
+		);
+		gl_imagePanel.setVerticalGroup(
+			gl_imagePanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_imagePanel.createSequentialGroup()
+					.addGap(5)
+					.addComponent(txtImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(imageLabel, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		imagePanel.setLayout(gl_imagePanel);		
+        
+		if(imgList.size() != 0 && MainWindow.ut.get_comment(currentImgId, null) != null)
 			txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 		else
 			txtComment.setText("");
@@ -300,6 +345,19 @@ public class SearchPanel extends JPanel {
 						txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 					else
 						txtComment.setText("");
+					
+					File downloadedImage;
+		    		ImageIcon icon;
+		    		try {
+		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
+		    			BufferedImage img=ImageIO.read(downloadedImage);
+		    	        icon=new ImageIcon(img);
+		    			imageLabel.setIcon(icon);
+		    			
+		    		} catch (IOException e1) {
+		    			// TODO Auto-generated catch block
+		    			e1.printStackTrace();
+		    		} 
 				}
 			}
 		});
@@ -315,12 +373,18 @@ public class SearchPanel extends JPanel {
 					else
 						txtComment.setText("");
 					
-					try {
-						driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} 
+					File downloadedImage;
+		    		ImageIcon icon;
+		    		try {
+		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
+		    			BufferedImage img=ImageIO.read(downloadedImage);
+		    	        icon=new ImageIcon(img);
+		    			imageLabel.setIcon(icon);
+		    			
+		    		} catch (IOException e1) {
+		    			// TODO Auto-generated catch block
+		    			e1.printStackTrace();
+		    		} 
 
 				}
 			}

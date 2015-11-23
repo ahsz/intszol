@@ -3,28 +3,13 @@ package intszol;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import sun.misc.IOUtils;
-
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
+//import java.util.stream.Collectors;
 
 public class InitialPanel extends JPanel {
 	private JTextField inputAuthCodeTxtField;
@@ -32,9 +17,10 @@ public class InitialPanel extends JPanel {
 	private JTextField txtTitleComment;
 	private JTextField txtTitleComment2;
 	private JButton sendAuthStringButton;
-
+	private DriveConnector driveInstance;
+	
 	public InitialPanel() throws URISyntaxException {
-		DriveConnector driveInstance = DriveConnector.getInstance();
+		driveInstance = DriveConnector.getInstance();
 		final java.net.URI uri = new java.net.URI(
 				driveInstance.getAuthorizationUrl());
 		class OpenUrlAction implements ActionListener {
@@ -94,13 +80,13 @@ public class InitialPanel extends JPanel {
 		} else { /* TODO: error handling */
 		}
 	}
-	
+	/*
 	public static String toString(InputStream inputStream) {
 	    BufferedReader reader = new BufferedReader(
 	        new InputStreamReader(inputStream));
 	    return reader.lines().collect(Collectors.joining(
 	        System.getProperty("line.separator")));
-	}
+	}*/
 
 	
 	
