@@ -194,14 +194,14 @@ public class SearchPanel extends JPanel {
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		    				.addGroup(groupLayout.createSequentialGroup()
 		    					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		    						.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
 		    						.addGroup(groupLayout.createSequentialGroup()
 		    							.addComponent(btnDeleteImage)
 		    							.addGap(147)
 		    							.addComponent(btnModifyImage)
 		    							.addPreferredGap(ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
 		    							.addComponent(btnShareImage))
-		    						.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
-		    						.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
+		    						.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
 		    					.addGap(18)
 		    					.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 		    					.addGap(20))
@@ -230,15 +230,14 @@ public class SearchPanel extends JPanel {
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 		    				.addComponent(txtSearchArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		    				.addComponent(btnSearch))
-		    			.addPreferredGap(ComponentPlacement.UNRELATED)
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-		    				.addGroup(groupLayout.createSequentialGroup()
+		    				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 		    					.addGap(123)
-		    					.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-		    					.addPreferredGap(ComponentPlacement.RELATED, 113, Short.MAX_VALUE))
+		    					.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
 		    				.addGroup(groupLayout.createSequentialGroup()
-		    					.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE)
-		    					.addPreferredGap(ComponentPlacement.UNRELATED)))
+		    					.addGap(18)
+		    					.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)))
+		    			.addPreferredGap(ComponentPlacement.UNRELATED)
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 		    				.addComponent(btnShareImage)
 		    				.addComponent(btnModifyImage)
@@ -294,7 +293,7 @@ public class SearchPanel extends JPanel {
 		txtImage.setVisible(false);
 		
 		if(radioButtonSearchForDate.isSelected())
-			txtSearchArea.setText("ilyen formátumba írd be, majd kitaláljuk");
+			txtSearchArea.setText("2015-01-01");
 		if(radioBtnSearchForComments.isSelected())
 			txtSearchArea.setText("Írja be a megjegyzést, melyre rákeresne!");
 		
@@ -329,7 +328,7 @@ public class SearchPanel extends JPanel {
 		);
 		imagePanel.setLayout(gl_imagePanel);		
         
-		if(imgList.size() != 0 && MainWindow.ut.get_comment(currentImgId, null) != null)
+		if(imgList.size() != 0 && MainWindow.ut.get_comment(currentImgId, null).size() != 0)
 			txtComment.setText(MainWindow.ut.get_comment(currentImgId, null).get(0).content);
 		else
 			txtComment.setText("");

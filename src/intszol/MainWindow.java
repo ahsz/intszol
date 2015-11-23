@@ -23,10 +23,12 @@ public class MainWindow {
 
 	private JFrame initialWindow;
 	private InitialPanel startPanel= null;
-	private BrowsePanel browsePanel = new BrowsePanel();
+	private BrowsePanel browsePanel;
 	private UploadPanel uploadPanel = new UploadPanel();
-	private SearchPanel searchPanel = new SearchPanel();
+	private SearchPanel searchPanel;
 	public static Utility ut;
+	private static int TYPE_BROWSE = 1;
+	private static int TYPE_SEARCH = 2;
 	
 
 	static { ut = new Utility(); }
@@ -195,16 +197,16 @@ public class MainWindow {
 		
 		JMenuItem menuItemBrowseImages = new JMenuItem("K\u00E9pek b\u00F6ng\u00E9sz\u00E9se");
 		menuFile.add(menuItemBrowseImages);
-	    menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel));
+	    menuItemBrowseImages.addActionListener(new MenuAction(startPanel, browsePanel, TYPE_BROWSE));
 
 				
 		JMenuItem menuItemUploadImages = new JMenuItem("K\u00E9pek felt\u00F6lt\u00E9se");
 		menuFile.add(menuItemUploadImages);
-		menuItemUploadImages.addActionListener(new MenuAction(startPanel, uploadPanel));
+		menuItemUploadImages.addActionListener(new MenuAction(startPanel, uploadPanel, 0));
 		
 		JMenuItem menuItemSearch = new JMenuItem("Keres\u00E9s");
 		menuFile.add(menuItemSearch);
-		menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel));
+		menuItemSearch.addActionListener(new MenuAction(startPanel, searchPanel, TYPE_SEARCH));
 		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
@@ -229,20 +231,30 @@ public class MainWindow {
 
 	    private JPanel newPanel;
 	    private JPanel oldPanel;
-	    private MenuAction(JPanel oldPanel, JPanel pnl) {
+		private int type;
+	    private MenuAction(JPanel oldPanel, JPanel pnl, int type) {
 	        this.newPanel = pnl;
 	        this.oldPanel = oldPanel;
+	        this.type = type;
 	    }
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-	        changePanel(oldPanel, newPanel);
+	        changePanel(oldPanel, newPanel, type);
 	    }
 	    
-	    private void changePanel(JPanel oldPanel, JPanel panel) {
-		    oldPanel.removeAll();
-		    oldPanel.add(panel);
+	    private void changePanel(JPanel oldPanel, JPanel panel, int type) {
+	    	if(type == TYPE_BROWSE){
+		    	browsePanel = new BrowsePanel();
+		    	newPanel = browsePanel;
+	    	}
+		    if(type == TYPE_SEARCH){
+		    	searchPanel = new SearchPanel();
+		    	newPanel = searchPanel;
+		    }
+	    	oldPanel.removeAll();
+		    oldPanel.add(newPanel);
 		    oldPanel.revalidate();
-		    oldPanel.repaint();
+		    oldPanel.repaint();   
 		}
 	}
 	
