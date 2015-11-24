@@ -47,6 +47,11 @@ public class SearchPanel extends JPanel {
 	private JLabel imageLabel;
 	private JPanel imagePanel;
 	
+	private boolean isDateUsed=false;
+	private String searchDateString="";
+	private String searchCommentString="";
+	
+	
 	private ArrayList<Image> imgList;
 	private ArrayList<Image> filteredImages;
 	private DriveConnector driveInstance = DriveConnector.getInstance();
@@ -138,6 +143,10 @@ public class SearchPanel extends JPanel {
 							if(commentList.get(i).content.toLowerCase().contains((String)(txtSearchArea.getText()).toLowerCase())){
 		    					filteredImages.addAll((ArrayList<Image>) MainWindow.ut.get_image(commentList.get(i).image_id, 2, null,null, null, null, null,null));
 		    					if(filteredImages.size() > 0){
+		    						
+		    						searchCommentString=(String)txtSearchArea.getText().toLowerCase();
+		    						isDateUsed=false;
+		    						
 		    						btnRight.setVisible(true);;
 		    						btnLeft.setVisible(true);;
 		    						txtTitleComment.setVisible(true);;
@@ -169,6 +178,9 @@ public class SearchPanel extends JPanel {
 		    		}
 		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null).size() !=0){
 		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null);
+		    			
+		    			isDateUsed=true;
+		    			searchDateString=txtSearchArea.getText();
 		    			
 		    			btnRight.setVisible(true);;
 						btnLeft.setVisible(true);;
@@ -429,6 +441,10 @@ public class SearchPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				driveInstance.deleteFile( imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2 );
 				MainWindow.ut.delete_image(null, null, imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_id2);
+				
+				if(isDateUsed){
+					imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, searchDateString, searchDateString, null,null,null);
+				}else{}
 
 			}
 		});
