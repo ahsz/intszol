@@ -128,8 +128,10 @@ public class SearchPanel extends JPanel {
 		    		btnDeleteImage.setVisible(false);
 		    		btnShareImage.setVisible(false);
 		    		txtImage.setVisible(false);
+		    		btnSaveComment.setVisible(false);
 		    		
-		    		if(radioBtnSearchForComments.isSelected()){
+		    		if(radioBtnSearchForComments.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null).size() !=0){
+		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null);
 		    			List<Comment> commentList = new ArrayList<Comment>();
 		    			commentList = MainWindow.ut.get_comment(null, 2); //TODO itt be van égetve a userID, ha több usert akarunk akkor dinamikussá kell ezt tenni
 		    			for (int i=0; i<commentList.size(); i++){
@@ -143,12 +145,27 @@ public class SearchPanel extends JPanel {
 		    						btnDeleteImage.setVisible(true);;
 		    						btnShareImage.setVisible(true);
 		    						txtImage.setVisible(true);
+		    						btnSaveComment.setVisible(true);
 		    						imgList = filteredImages;
 		    					}
 							}
 		    				
 		    			}
 
+		    			File downloadedImage;
+			    		ImageIcon icon;
+			    		try {
+			    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
+			    			BufferedImage img=ImageIO.read(downloadedImage);
+			    			Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(imagePanel.getWidth(), imagePanel.getHeight()));
+			    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));
+			    			imageLabel.setIcon(icon);
+			    			
+			    		} catch (IOException e1) {
+			    			// TODO Auto-generated catch block
+			    			e1.printStackTrace();
+			    		} 
+		    			
 		    		}
 		    		if(radioButtonSearchForDate.isSelected() && MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null).size() !=0){
 		    			imgList = (ArrayList<Image>) MainWindow.ut.get_image(null, 2, null, txtSearchArea.getText(), txtSearchArea.getText(), null,null,null);
@@ -160,24 +177,27 @@ public class SearchPanel extends JPanel {
 						btnDeleteImage.setVisible(true);;
 						btnShareImage.setVisible(true);
 						txtImage.setVisible(true);
+						btnSaveComment.setVisible(true);
+						
+						File downloadedImage;
+			    		ImageIcon icon;
+			    		try {
+			    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
+			    			BufferedImage img=ImageIO.read(downloadedImage);
+			    			Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(imagePanel.getWidth(), imagePanel.getHeight()));
+			    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));
+			    			imageLabel.setIcon(icon);
+			    			
+			    		} catch (IOException e1) {
+			    			// TODO Auto-generated catch block
+			    			e1.printStackTrace();
+			    		} 
 		    		}
 		    		
 		    		//TODO ezzel lehet lekerni a filet
 		    		//InputStream getFileToInputStream(String flieID, String fileUrl)
 		    		
-		    		File downloadedImage;
-		    		ImageIcon icon;
-		    		try {
-		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
-		    			BufferedImage img=ImageIO.read(downloadedImage);
-		    			Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(imagePanel.getWidth(), imagePanel.getHeight()));
-		    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));
-		    			imageLabel.setIcon(icon);
-		    			
-		    		} catch (IOException e1) {
-		    			// TODO Auto-generated catch block
-		    			e1.printStackTrace();
-		    		} 
+		    		
 		    		
 		    		if(imgList.size()==0)
 		    			JOptionPane.showMessageDialog(SearchPanel.this,
@@ -302,6 +322,8 @@ public class SearchPanel extends JPanel {
 		btnDeleteImage.setVisible(false);
 		btnShareImage.setVisible(false);
 		txtImage.setVisible(false);
+		btnSaveComment.setVisible(false);
+
 		
 		if(radioButtonSearchForDate.isSelected())
 			txtSearchArea.setText("2015-01-01");
