@@ -1,5 +1,6 @@
 package intszol;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.plaf.DimensionUIResource;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
@@ -20,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class BrowsePanel extends JPanel {
 
@@ -30,6 +33,7 @@ public class BrowsePanel extends JPanel {
 	private JButton btnDeleteImage;
 	private JButton btnShareImage;
 	private JTextField txtImage;
+	private JPanel imagePanel;
 	
 	private int currentImgId;
 	private int currentImgIndex;
@@ -52,7 +56,7 @@ public class BrowsePanel extends JPanel {
 		
 		btnLeft = new JButton("");		
 		
-		JPanel imagePanel = new JPanel();
+		imagePanel = new JPanel();
 		try {
 		    BufferedImage img = ImageIO.read(getClass().getResource("/images/left_arrow.png"));
 		    btnLeft.setIcon(new ImageIcon(img));
@@ -103,6 +107,7 @@ public class BrowsePanel extends JPanel {
 		    );
 		    
 		    txtImage = new JTextField();
+		    txtImage.setHorizontalAlignment(SwingConstants.CENTER);
 		    txtImage.setEditable(false);
 		    txtImage.setColumns(10);
 		    
@@ -151,27 +156,28 @@ public class BrowsePanel extends JPanel {
 			txtImage.setText(imgList.get(currentImgIndex).name);
 		}
 		imageLabel = new JLabel("");
+		imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_imagePanel = new GroupLayout(imagePanel);
 		gl_imagePanel.setHorizontalGroup(
 			gl_imagePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_imagePanel.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_imagePanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_imagePanel.createSequentialGroup()
-							.addGap(183)
-							.addComponent(txtImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_imagePanel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(imageLabel, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)))
-					.addContainerGap())
+							.addComponent(imageLabel, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_imagePanel.createSequentialGroup()
+							.addComponent(txtImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(195))))
 		);
 		gl_imagePanel.setVerticalGroup(
 			gl_imagePanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_imagePanel.createSequentialGroup()
-					.addGap(5)
+					.addContainerGap()
 					.addComponent(txtImage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(imageLabel, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
-					.addContainerGap())
+					.addGap(24)
+					.addComponent(imageLabel, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		imagePanel.setLayout(gl_imagePanel);
 		if(imgList.size() != 0 && MainWindow.ut.get_comment(currentImgId, null).size() != 0)
@@ -186,8 +192,10 @@ public class BrowsePanel extends JPanel {
 				downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
 				BufferedImage img=ImageIO.read(downloadedImage);
 		        icon=new ImageIcon(img);
-				imageLabel.setIcon(icon);
-			}
+		        Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(503, 399));
+    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));	
+    			imageLabel.setIcon(icon);
+}
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -222,8 +230,9 @@ public class BrowsePanel extends JPanel {
 		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
 		    			BufferedImage img=ImageIO.read(downloadedImage);
 		    	        icon=new ImageIcon(img);
+		    	        Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(503, 399));
+		    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));	
 		    			imageLabel.setIcon(icon);
-		    			
 		    		} catch (IOException e1) {
 		    			// TODO Auto-generated catch block
 		    			e1.printStackTrace();
@@ -256,9 +265,9 @@ public class BrowsePanel extends JPanel {
 		    		try {
 		    			downloadedImage = driveInstance.getFile(imgList.get(currentImgIndex).gd_id, imgList.get(currentImgIndex).gd_url, imgList.get(currentImgIndex).gd_id2, imgList.get(currentImgIndex).gd_url2, imgList.get(currentImgIndex).name);
 		    			BufferedImage img=ImageIO.read(downloadedImage);
-		    	        icon=new ImageIcon(img);
+		    	        Dimension scaled = getScaledDimension(new DimensionUIResource(img.getWidth(), img.getHeight()), new DimensionUIResource(503, 399));
+		    	        icon=new ImageIcon(img.getScaledInstance((int)scaled.getWidth(), (int) scaled.getHeight(), 0));		
 		    			imageLabel.setIcon(icon);
-		    			
 		    		} catch (IOException e1) {
 		    			// TODO Auto-generated catch block
 		    			e1.printStackTrace();
@@ -266,5 +275,33 @@ public class BrowsePanel extends JPanel {
 				}
 			}
 		});
+	}
+	
+	private Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
+
+	    int original_width = imgSize.width;
+	    int original_height = imgSize.height;
+	    int bound_width = boundary.width;
+	    int bound_height = boundary.height;
+	    int new_width = original_width;
+	    int new_height = original_height;
+
+	    // first check if we need to scale width
+	    if (original_width > bound_width) {
+	        //scale width to fit
+	        new_width = bound_width;
+	        //scale height to maintain aspect ratio
+	        new_height = (new_width * original_height) / original_width;
+	    }
+
+	    // then check if we need to scale even with the new height
+	    if (new_height > bound_height) {
+	        //scale height to fit instead
+	        new_height = bound_height;
+	        //scale width to maintain aspect ratio
+	        new_width = (new_height * original_width) / original_height;
+	    }
+
+	    return new Dimension(new_width, new_height);
 	}
 }
