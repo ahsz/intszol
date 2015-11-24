@@ -50,6 +50,7 @@ public class SearchPanel extends JPanel {
 	private ArrayList<Image> imgList;
 	private ArrayList<Image> filteredImages;
 	private DriveConnector driveInstance = DriveConnector.getInstance();
+	private JButton btnSaveComment;
 	/**
 	 * Create the panel.
 	 */
@@ -219,36 +220,38 @@ public class SearchPanel extends JPanel {
 		    groupLayout.setVerticalGroup(
 		    	groupLayout.createParallelGroup(Alignment.LEADING)
 		    		.addGroup(groupLayout.createSequentialGroup()
-		    			.addContainerGap()
-		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-		    				.addComponent(txtSearchTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		    				.addComponent(radioButtonSearchForDate)
-		    				.addComponent(radioBtnSearchForComments))
-		    			.addGap(8)
-		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-		    				.addComponent(txtSearchArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		    				.addComponent(btnSearch))
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		    				.addGroup(groupLayout.createSequentialGroup()
-		    					.addGap(123)
-		    					.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-		    				.addGroup(groupLayout.createSequentialGroup()
+		    					.addContainerGap()
+		    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		    						.addComponent(txtSearchTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		    						.addComponent(radioButtonSearchForDate)
+		    						.addComponent(radioBtnSearchForComments))
+		    					.addGap(8)
+		    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		    						.addComponent(txtSearchArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		    						.addComponent(btnSearch))
+		    					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		    						.addGroup(groupLayout.createSequentialGroup()
+		    							.addGap(123)
+		    							.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+		    						.addGroup(groupLayout.createSequentialGroup()
+		    							.addGap(18)
+		    							.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)))
+		    					.addPreferredGap(ComponentPlacement.UNRELATED)
+		    					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		    						.addComponent(btnShareImage)
+		    						.addComponent(btnDeleteImage))
 		    					.addGap(18)
-		    					.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)))
-		    			.addPreferredGap(ComponentPlacement.UNRELATED)
-		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-		    				.addComponent(btnShareImage)
-		    				.addComponent(btnDeleteImage))
-		    			.addGap(18)
-		    			.addComponent(commentPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-		    			.addGap(33))
-		    		.addGroup(groupLayout.createSequentialGroup()
-		    			.addGap(184)
-		    			.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(359, Short.MAX_VALUE))
+		    					.addComponent(commentPanel, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))
+		    				.addGroup(groupLayout.createSequentialGroup()
+		    					.addGap(184)
+		    					.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
+		    			.addContainerGap())
 		    );
 		    
 		    txtImage = new JTextField();
+		    txtImage.setHorizontalAlignment(SwingConstants.CENTER);
 		    txtImage.setEditable(false);
 		    txtImage.setColumns(10);
 		    
@@ -259,13 +262,23 @@ public class SearchPanel extends JPanel {
 		    
 		    txtComment = new JTextField();
 		    txtComment.setColumns(10);
+		    
+		    btnSaveComment = new JButton("Mentés");
+		    btnSaveComment.addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent arg0) {
+		    		MainWindow.ut.add_comment(currentImgId, 2, txtComment.getText());
+		    	}
+		    });
 		    GroupLayout gl_commentPanel = new GroupLayout(commentPanel);
 		    gl_commentPanel.setHorizontalGroup(
 		    	gl_commentPanel.createParallelGroup(Alignment.LEADING)
 		    		.addGroup(gl_commentPanel.createSequentialGroup()
 		    			.addComponent(txtTitleComment, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(508, Short.MAX_VALUE))
-		    		.addComponent(txtComment, GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+		    			.addContainerGap(458, Short.MAX_VALUE))
+		    		.addComponent(txtComment, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+		    		.addGroup(Alignment.TRAILING, gl_commentPanel.createSequentialGroup()
+		    			.addContainerGap()
+		    			.addComponent(btnSaveComment))
 		    );
 		    gl_commentPanel.setVerticalGroup(
 		    	gl_commentPanel.createParallelGroup(Alignment.LEADING)
@@ -273,7 +286,9 @@ public class SearchPanel extends JPanel {
 		    			.addComponent(txtTitleComment, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		    			.addPreferredGap(ComponentPlacement.RELATED)
 		    			.addComponent(txtComment, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(21, Short.MAX_VALUE))
+		    			.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+		    			.addComponent(btnSaveComment)
+		    			.addContainerGap())
 		    );
 		    commentPanel.setLayout(gl_commentPanel);
 		    setLayout(groupLayout);

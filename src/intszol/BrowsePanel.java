@@ -74,12 +74,12 @@ public class BrowsePanel extends JPanel {
 		    			.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 		    			.addGap(18)
 		    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		    				.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
 		    				.addComponent(imagePanel, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
 		    				.addGroup(groupLayout.createSequentialGroup()
 		    					.addComponent(btnDeleteImage)
 		    					.addPreferredGap(ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
-		    					.addComponent(btnShareImage))
-		    				.addComponent(commentPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))
+		    					.addComponent(btnShareImage)))
 		    			.addGap(18)
 		    			.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 		    			.addGap(32))
@@ -97,13 +97,13 @@ public class BrowsePanel extends JPanel {
 		    				.addGroup(groupLayout.createSequentialGroup()
 		    					.addContainerGap()
 		    					.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 399, GroupLayout.PREFERRED_SIZE)))
-		    			.addGap(29)
-		    			.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+		    			.addPreferredGap(ComponentPlacement.UNRELATED)
+		    			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 		    				.addComponent(btnDeleteImage)
 		    				.addComponent(btnShareImage))
-		    			.addGap(29)
-		    			.addComponent(commentPanel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		    			.addGap(18)
+		    			.addComponent(commentPanel, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+		    			.addContainerGap())
 		    );
 		    
 		    txtImage = new JTextField();
@@ -118,13 +118,24 @@ public class BrowsePanel extends JPanel {
 		    
 		    txtComment = new JTextField();
 		    txtComment.setColumns(10);
+		    
+		    JButton btnSaveComment = new JButton("Ment\u00E9s");
+		    btnSaveComment.addActionListener(new ActionListener() {
+		    	public void actionPerformed(ActionEvent e) {
+		    		MainWindow.ut.add_comment(currentImgId, 2, txtComment.getText());
+
+		    	}
+		    });
 		    GroupLayout gl_commentPanel = new GroupLayout(commentPanel);
 		    gl_commentPanel.setHorizontalGroup(
 		    	gl_commentPanel.createParallelGroup(Alignment.LEADING)
 		    		.addGroup(gl_commentPanel.createSequentialGroup()
 		    			.addComponent(txtTitleComment, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(447, Short.MAX_VALUE))
-		    		.addComponent(txtComment, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+		    			.addContainerGap(434, Short.MAX_VALUE))
+		    		.addComponent(txtComment, GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+		    		.addGroup(Alignment.TRAILING, gl_commentPanel.createSequentialGroup()
+		    			.addContainerGap()
+		    			.addComponent(btnSaveComment))
 		    );
 		    gl_commentPanel.setVerticalGroup(
 		    	gl_commentPanel.createParallelGroup(Alignment.LEADING)
@@ -132,7 +143,9 @@ public class BrowsePanel extends JPanel {
 		    			.addComponent(txtTitleComment, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 		    			.addPreferredGap(ComponentPlacement.RELATED)
 		    			.addComponent(txtComment, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-		    			.addContainerGap(21, Short.MAX_VALUE))
+		    			.addPreferredGap(ComponentPlacement.RELATED)
+		    			.addComponent(btnSaveComment)
+		    			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		    );
 		    commentPanel.setLayout(gl_commentPanel);
 		    setLayout(groupLayout);
