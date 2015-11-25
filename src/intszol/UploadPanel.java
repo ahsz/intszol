@@ -1,6 +1,7 @@
 package intszol;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
@@ -67,6 +68,8 @@ public class UploadPanel extends JPanel {
 		            	 
 		            	 
 		            } else{
+		    			JOptionPane.showMessageDialog(UploadPanel.this,
+		    				    "Rossz formatum, valassz .jpeg-et!!!");
 		            	 System.out.println("NEM .jpeg!!! " + file.getName());
 		            	 
 		            }
